@@ -11,13 +11,21 @@ import {
   Position,
   Node,
   Edge,
+  NodeProps,
+  Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { motion, AnimatePresence } from "framer-motion";
 import { GlassCard } from "@/components/floating/GlassCard";
 
+type GlassNodeData = {
+  label: string;
+  icon?: string;
+  desc?: string;
+};
+
 // Custom Glass Node Component
-const GlassNode = ({ data, selected }: any) => {
+const GlassNode = ({ data, selected }: NodeProps<Node<GlassNodeData>>) => {
   return (
     <div className={`px-6 py-3 rounded-2xl backdrop-blur-xl border transition-all duration-300 ${
       selected ? "bg-accent/20 border-accent shadow-[0_0_20px_rgba(250,204,21,0.4)]" : "bg-[#0a0a0f]/60 border-white/10 shadow-lg"
@@ -56,16 +64,16 @@ const initialEdges: Edge[] = [
 ];
 
 export default function WebPage() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [nodes, , onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [activeNode, setActiveNode] = useState<Node | null>(null);
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#facc15", strokeWidth: 2 } }, eds)),
+    (params: Connection) => setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#facc15", strokeWidth: 2 } }, eds)),
     [setEdges],
   );
 
-  const onNodeClick = (_: any, node: Node) => {
+  const onNodeClick = (_event: React.MouseEvent, node: Node) => {
     if (node.id === "center") return;
     setActiveNode(node);
   };

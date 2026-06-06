@@ -17,7 +17,7 @@ export function Navbar() {
 
   const { triggerSignal } = useCinematic();
 
-  const handleLinkClick = (e: React.MouseEvent, path: string) => {
+  const handleLinkClick = () => {
     setMobileMenuOpen(false);
   };
 
@@ -33,7 +33,7 @@ export function Navbar() {
       >
         <Link 
           href="/"
-          onClick={(e) => handleLinkClick(e, "/")}
+          onClick={() => handleLinkClick()}
           className="text-white/90 hover:text-white transition-colors uppercase tracking-[4px] text-sm font-medium focus:outline-none"
         >
           tut.meteor
@@ -51,7 +51,7 @@ export function Navbar() {
           >
             <Link
               href={link.href}
-              onClick={(e) => handleLinkClick(e, link.href)}
+              onClick={() => handleLinkClick()}
               className="text-sm font-medium text-white/70 hover:text-white transition-colors py-2 block"
             >
               {link.label}
@@ -115,7 +115,7 @@ export function Navbar() {
                 >
                   <Link
                     href={link.href}
-                    onClick={(e) => handleLinkClick(e, link.href)}
+                    onClick={() => handleLinkClick()}
                     className="text-2xl font-medium text-white/90 hover:text-white transition-colors"
                   >
                     {link.label}

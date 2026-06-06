@@ -60,7 +60,7 @@ export default function ArsenalPage() {
             <GlassCard>
               <h2 className="text-xl font-bold text-white mb-2">The Vessel</h2>
               <ul className="text-white/70 font-light space-y-2 text-sm">
-                <li>• [6'2" FRAME PLACEHOLDER]</li>
+                <li>• [6&apos;2&quot; FRAME PLACEHOLDER]</li>
                 <li>• [OMAD PROTOCOL PLACEHOLDER]</li>
               </ul>
             </GlassCard>
@@ -82,7 +82,7 @@ export default function ArsenalPage() {
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-40 mix-blend-screen">
         <svg className="w-full h-full">
           {SKILLS.map((skill, i) => {
-            return SKILLS.slice(i + 1).map((target, j) => (
+            return SKILLS.slice(i + 1).map((target) => (
               <motion.line
                 key={`${skill.id}-${target.id}`}
                 x1={`${skill.x}%`}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { useCinematic } from "./CinematicOverlay";
 
@@ -88,10 +89,11 @@ export function Hero() {
             style={{ rotateX, rotateY }}
             className="w-full h-full preserve-3d"
           >
-            <img 
+            <Image 
               src="/hero-character.jpg" 
               alt="Catwoman Builder" 
-              className="w-full h-full object-contain mix-blend-screen opacity-90 drop-shadow-[0_0_30px_rgba(212,179,199,0.2)]"
+              fill
+              className="object-contain mix-blend-screen opacity-90 drop-shadow-[0_0_30px_rgba(212,179,199,0.2)]"
               style={{
                 WebkitMaskImage: "radial-gradient(circle at center, black 50%, transparent 80%)",
                 maskImage: "radial-gradient(circle at center, black 50%, transparent 80%)",
@@ -204,7 +206,7 @@ export function Hero() {
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1 }}
         >
           <div className="px-5 py-3 rounded-2xl bg-[#0a0a0f]/60 backdrop-blur-xl border border-white/10 text-white/80 text-sm font-medium shadow-2xl">
-            [HEIGHT: 6'2"] • [BUILD VIBE]
+            [HEIGHT: 6&apos;2&quot;] • [BUILD VIBE]
           </div>
         </motion.div>
 

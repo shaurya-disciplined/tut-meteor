@@ -17,7 +17,7 @@ export function Rain({
   speedMultiplier = 1,
   sharpness = "normal"
 }: RainProps) {
-  const [drops, setDrops] = useState<{ id: number; left: number; delay: number; duration: number; opacity: number }[]>([]);
+  const [drops, setDrops] = useState<{ id: number; left: number; delay: number; duration: number; opacity: number; height: number; width: number }[]>([]);
 
   useEffect(() => {
     // Generate static rain drops on the client side to avoid hydration mismatch

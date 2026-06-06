@@ -69,7 +69,7 @@ export default function StoryPage() {
         whileInView={{ opacity: 1 }}
         className="fixed bottom-12 left-1/2 -translate-x-1/2 z-40 bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 p-4 rounded-full flex items-center gap-8 shadow-2xl"
       >
-        {CHAPTERS.map((chapter, i) => (
+        {CHAPTERS.map((chapter) => (
           <button
             key={`timeline-${chapter.id}`}
             onClick={() => setActiveChapter(activeChapter === chapter.id ? null : chapter.id)}

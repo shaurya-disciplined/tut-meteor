@@ -36,7 +36,7 @@ export default function CodexPage() {
         >
           <DriftItem duration={8} yDrift={[0, -10, 0]}>
             <p className="text-2xl md:text-4xl font-serif italic text-white/90 leading-relaxed">
-              "[PLACEHOLDER FOR CORE IDENTITY STATEMENT OR MANIFESTO INTRO]"
+              &quot;[PLACEHOLDER FOR CORE IDENTITY STATEMENT OR MANIFESTO INTRO]&quot;
             </p>
           </DriftItem>
         </motion.section>
