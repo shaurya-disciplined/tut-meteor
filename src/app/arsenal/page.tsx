@@ -38,8 +38,13 @@ export default function ArsenalPage() {
               <p className="text-white/80 font-light mb-6 whitespace-pre-wrap leading-relaxed">
                 My first full AI chatbot. Built it completely from scratch using Next.js 16, TypeScript, Tailwind and Groq API..\n\nDark cyber Batman theme with looping video background, glassmorphic design, electric thunder effects, real-time chat, chat history and full mobile support. Deployed on Vercel.\n\nWent live in under 10 days. Still improving it.
               </p>
-              <a href="#" className="inline-block px-6 py-2 rounded-lg bg-accent/20 text-accent font-medium hover:bg-accent/30 transition-colors">
-                [LIVE SITE LINK]
+              <a 
+                href="https://vibe-link-delta.vercel.app" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-block px-6 py-2 rounded-lg bg-accent/20 text-accent font-medium hover:bg-accent/30 transition-colors"
+              >
+                Launch Vibe Link
               </a>
             </GlassCard>
           </DriftItem>

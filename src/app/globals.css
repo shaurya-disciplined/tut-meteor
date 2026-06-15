@@ -28,3 +28,20 @@
   background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.2));
   animation: rain-fall linear infinite;
 }
+
+/* ReactFlow Custom Blur Styles */
+.has-expanded-nodes .react-flow__edge {
+  opacity: 0.15;
+  filter: blur(3px);
+  transition: all 0.3s ease;
+}
+
+.has-expanded-nodes .react-flow__node:not(.is-expanded) {
+  opacity: 0.3;
+  filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+.react-flow__edge, .react-flow__node {
+  transition: all 0.3s ease;
+}

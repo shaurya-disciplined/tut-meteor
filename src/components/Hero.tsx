@@ -188,7 +188,7 @@ export function Hero() {
           transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
         >
           <motion.button 
-            onClick={() => triggerSignal()}
+            onClick={() => triggerSignal("/web")}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="text-base lg:text-lg px-8 py-3.5 rounded-2xl bg-[#0a0a0f]/80 backdrop-blur-md border border-white/15 text-[#facc15] font-medium tracking-wide shadow-[0_0_20px_rgba(250,204,21,0.15)] hover:shadow-[0_0_35px_rgba(250,204,21,0.35)] transition-shadow duration-300"

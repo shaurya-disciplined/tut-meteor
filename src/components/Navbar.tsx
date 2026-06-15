@@ -63,7 +63,7 @@ export function Navbar() {
 
       {/* 3. Floating Discord Button (Top Right) */}
       <motion.button
-        onClick={() => triggerSignal()}
+        onClick={() => triggerSignal("/connect")}
         className="fixed top-6 right-6 lg:right-12 z-50 hidden md:block px-5 py-2 rounded-xl text-sm font-medium text-white/90 border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 focus:outline-none bg-[#050505]/20 backdrop-blur-md drop-shadow-lg pointer-events-auto"
         animate={{ y: [0, 6, 0], rotate: [0, -1, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
@@ -126,7 +126,7 @@ export function Navbar() {
               <motion.button
                 onClick={() => {
                   setMobileMenuOpen(false);
-                  triggerSignal();
+                  triggerSignal("/connect");
                 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
