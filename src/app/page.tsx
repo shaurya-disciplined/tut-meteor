@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
-import { SplitText, Reveal } from "@/components/Reveal";
+import { Reveal } from "@/components/Reveal";
 import { Marquee } from "@/components/Marquee";
 import { Magnetic } from "@/components/Magnetic";
 import { Footer } from "@/components/Footer";
@@ -28,7 +28,7 @@ export default function Home() {
   });
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const carY = useTransform(scrollYProgress, [0, 1], ["0%", "-16%"]);
+
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
