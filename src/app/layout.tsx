@@ -32,6 +32,8 @@ const mono = localFont({
   display: "swap",
 });
 
+import { WebGLCanvasManager } from "@/components/WebGLCanvas";
+
 export const metadata: Metadata = {
   title: "tut.meteor",
   description: "A builder who works while the city sleeps. Cars, code, and dark rainy nights.",
@@ -56,12 +58,14 @@ export default function RootLayout({
           <BackgroundLayer />
           <Grain />
           <Cursor />
-          <Navbar />
-          <PageTransition>
-            <main className="flex-grow w-full flex flex-col relative z-20">
-              {children}
-            </main>
-          </PageTransition>
+          <WebGLCanvasManager>
+            <Navbar />
+            <PageTransition>
+              <main className="flex-grow w-full flex flex-col relative z-20">
+                {children}
+              </main>
+            </PageTransition>
+          </WebGLCanvasManager>
         </SmoothScroll>
       </body>
     </html>
