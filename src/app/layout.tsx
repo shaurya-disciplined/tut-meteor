@@ -5,6 +5,8 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Preloader } from "@/components/Preloader";
 import { Cursor } from "@/components/Cursor";
+import { Headlight } from "@/components/Headlight";
+import { TripMeter } from "@/components/TripMeter";
 import { Grain } from "@/components/Grain";
 import { Navbar } from "@/components/Navbar";
 import { BackgroundLayer } from "@/components/BackgroundLayer";
@@ -58,6 +60,8 @@ export default function RootLayout({
           <BackgroundLayer />
           <Grain />
           <Cursor />
+          <Headlight />
+          <TripMeter />
           <WebGLCanvasManager>
             <Navbar />
             <PageTransition>

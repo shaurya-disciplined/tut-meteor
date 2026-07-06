@@ -84,7 +84,7 @@ export default function SignalPage() {
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-md">
             <p className="text-fluid-subtitle text-muted font-light">
-              For collaborations at the intersection of graphics, systems, and design. Pick a frequency.
+              If you are building something interesting where design meets code, I want to hear about it. Pick a frequency.
             </p>
           </Reveal>
         </div>

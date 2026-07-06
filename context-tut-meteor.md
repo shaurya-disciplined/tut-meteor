@@ -45,7 +45,7 @@ table**. The site must feel reserved and a little mysterious — not an open boo
 ## 4. Design system
 
 **Typography** (all via `next/font`, no external CDN — must work offline):
-- **Display** (big wordmarks/headlines): **Bodoni Moda** (Google, variable) — high-contrast Didone, couture-luxury drama.
+- **Display** (big wordmarks/headlines): **Cormorant Garamond** (Google, weights 300–700 + italic) — high-contrast couture serif. *(Was speced as Bodoni Moda in planning; the actual build ships Cormorant Garamond — see `src/app/layout.tsx`.)*
 - **Body / UI**: **Geist Sans** — already vendored at `src/app/fonts/GeistVF.woff` (replaces generic Inter).
 - **Mono / eyebrow labels / coordinates**: **Geist Mono** — already at `src/app/fonts/GeistMonoVF.woff`.
 
@@ -139,8 +139,12 @@ cursor, per-page reveals/parallax, magnetic buttons, contact buttons open correc
 literal `\n\n`, no broken/orphaned links, mobile layout, reduced-motion path.
 
 ## 10. Tech baseline
-Next.js 14 (app router) · TypeScript · Tailwind · Framer Motion 12 · lucide-react · lenis (smooth scroll). `@xyflow/react` is still in `package.json` but no longer imported (was node-map; `/web` now a **custom** constellation). Local fonts
-in `src/app/fonts/`.
+Next.js 14 (app router) · TypeScript · Tailwind · Framer Motion 12 · lucide-react · lenis (smooth scroll).
+**WebGL stack (added in Phase 2):** `three` · `@react-three/fiber` · `@react-three/drei` (`View` tunnel + `useTexture`).
+`@react-three/postprocessing` is **installed but not yet imported** (planned Phase 4 bloom/chromatic-aberration
+pipeline is not built). `@xyflow/react` is still in `package.json` but no longer imported (was node-map; `/web`
+now a **custom** constellation). Local fonts in `src/app/fonts/`. Rapier physics (planned Phase 3) is **not
+installed**.
 
 ## 11. Image & video manifest (added — enrichment phase)
 **Hard rule: no image/video repeats anywhere.** Reusable layers: `GhostImage.tsx` (grayscale low-opacity
@@ -179,3 +183,92 @@ self-evolving memory fabric governed by an arbiter LLM.
 **Dev-server discipline (see memory `tut-meteor-build-gotcha`):** never `npm run build` while `npm run dev`
 runs — it corrupts `.next` and white-screens the site. Verify via the running dev server (routes 200,
 `/_next/static/*.js` chunks 200, assets 200).
+
+## 12. WebGL / NOCTURNE motion layer — actual state (updated 2026-07-06)
+
+Aspirational plans live in `filesssss/masterpiece_roadmap.md` and `filesssss/NOCTURNE_DEVELOPMENT_BIBLE.md`
+(fluid smoke, particle swarms, glass refraction, Rapier rigid-body typography, video-synced DOM destruction,
+post-processing). **What is actually built so far:**
+
+- **Phase 1 (done):** copywriting overhaul, fluid `clamp()` type scale (`--text-hero/display/subtitle/body/meta`
+  in `globals.css`), Cormorant Garamond display font.
+- **Phase 2 (done):** global persistent WebGL layer in `src/components/WebGLCanvas.tsx`, mounted once in
+  `layout.tsx` as `<WebGLCanvasManager>` wrapping all routes so it survives navigation. It renders **two
+  fixed full-screen `<Canvas>`es**:
+  - **Background canvas** (`-z-20`, opaque): a custom GLSL fragment shader (`FluidShader`) — Perlin/simplex
+    `fbm` domain-warped smoke in a charcoal→bronze palette. Reacts to mouse position (`uMouse`) and to
+    scroll velocity (`uVelocity`, pulses a bronze hue on fast scroll).
+  - **Foreground canvas** (`z-30`, transparent): hosts a drei `<View.Port />` so per-page `<View>` portals
+    (from `WebGLImage`) draw here.
+- **Phase 3+ (NOT built):** no Rapier physics, no glass-refraction render target, no particle swarms, no
+  post-processing (bloom / chromatic aberration / vignette). Reduced-motion / mobile-GPU fallbacks for the
+  fluid shader are **not** implemented yet.
+
+**`WebGLImage.tsx` (new, uncommitted WIP):** a `<View>`-portal image plane with a liquid-ripple + mouse
+displacement + chromatic-aberration shader on hover. Currently wired only into `/midnight`'s three "dream car"
+cards (replacing the old CSS `background-image` divs).
+
+> ✅ **RESOLVED (2026-07-06):** the `WebGLImage` shared-tunnel approach fought the z-stack badly. Above the DOM
+> (`z-30`) it hid the card labels; below the DOM (`-z-10`) it collided with the opaque `BackgroundLayer`
+> (`z-[-10]`, `bg-void`) and the page's own `bg-void`, so the car images rendered as black boxes.
+> **Fix:** reverted `/midnight` to the reliable CSS `background-image` cards and removed the unused foreground
+> View canvas from `WebGLCanvas.tsx`. `WebGLImage.tsx` stays in the repo, unused, staged for the Phase 4 liquid
+> images. Do NOT re-mount it behind an opaque layer.
+
+## 13. Plan v2 + Phase 1 copy pass (2026-07-06)
+
+- **Active plan is now `filesssss/NOCTURNE_MASTERPLAN_v2.md`** (a more creative rework that keeps the original
+  two docs as the source ambition). It adds a curated effect layer (time-aware smoke palette, headlight cursor,
+  scroll-velocity rain, trip-meter HUD, ignition load, gear-shift transitions, magnetic wordmark, carved codex,
+  breathing constellation) under a hard "one signature per page, restraint is the brand" guardrail, and
+  re-phases the work. **Phase 1 = "The Voice and The Type."**
+- **Phase 1 executed:** rewrote the copy that still read as AI/corporate boilerplate into plain human lines.
+  Touched: home hero subtitle + WHO statement; all 5 Arsenal project bodies + intro; the weaker Story lines
+  in all 4 chapters; Signal intro. Codex + Signal cards + Library annotations left as-is (already human / owner's
+  own words).
+- **Voice rule (owner, enforced site-wide):** **no hyphens and no em/en dashes in any visible copy or title.**
+  Use `..` or rephrase so the sentence never needs one. Structural hyphens are fine (route slugs, CSS classes,
+  URLs, code, book-page slugs). Text must read like a person wrote it, not a generator.
+
+## 14. Phase 2 — Atmosphere (2026-07-06)
+
+The old `BackgroundLayer` street video had an opaque `bg-void` base that was hiding the Phase 2 smoke shader
+entirely. Retired the video: `BackgroundLayer` is now transparent (vignette + rain only), so the bespoke WebGL
+smoke is the real backdrop. Smoke shows on pages without a root `bg-void` (home, story, arsenal, signal,
+library, web); `/midnight` and `/codex` keep their own dark backdrops. Phase 2 shipped:
+- **Time-aware smoke palette** — shader `uWarm` uniform from the visitor's local hour: cold blue-black through
+  deep night, warm bronze in the pre-dawn window (`WebGLCanvas.tsx`).
+- **Scroll drags the smoke** — scroll velocity now offsets the noise field (`st.y += uVelocity`), parting the
+  smoke as you move, on top of the existing bronze velocity pulse.
+- **Headlight cursor** — `Headlight.tsx`, a screen-blend cone of light trailing the pointer that lifts detail
+  out of the smoke. Off on touch and reduced motion. Mounted in `layout.tsx`.
+
+## 15. Smoke freeze on navigating to /web — DIAGNOSED + FIXED (2026-07-06)
+
+**Root cause (confirmed from DevTools):** navigating to `/web` fires a burst of ~12 WebGL warnings
+(DevTools counter jumps 1 → 13) — the smoke's WebGL **context is lost during the navigation transition**
+on this GPU. Once lost it stays dead on every following page (the canvas persists but its GPU context is
+gone), so the smoke is frozen until a full reload builds a new one. Proof it is transient, not permanent
+GPU pressure: a **hard refresh on /web itself works** (a freshly-created context survives /web fine).
+Lenis scroll is NOT actually broken — `/web` is intentionally `overflow-hidden` (no scroll by design).
+
+**Fix (v3, the actual mechanism): "born dead" contexts.** Event-based recovery AND a frame-heartbeat watchdog
+both failed, because: a canvas rebuilt while the GPU is still resetting is created ALREADY lost. A born-dead
+context never fires `webglcontextlost` (it was never alive), and three.js keeps issuing silent no-op GL calls
+into it, so frame counters keep advancing while zero pixels update — both prior detectors were blind to it.
+**Current fix:** poll `glRef.current.getContext().isContextLost()` every 2s (tab visible only) and remount the
+`<Canvas>` via `canvasKey` until a context sticks. `glRef` is set in the Canvas `onCreated`. `ContextGuard`
+(contextlost event → remount after 300ms) kept as the fast path. If THIS still fails, the remaining option is
+pausing/unmounting the smoke on `/web` specifically (route-aware) and remounting on leave.
+
+## 16. Phase 3 — Machine Feel (in progress, 2026-07-06)
+
+Done (both self-contained, avoid the fragile nav/transition code):
+- **Trip-meter HUD** — `TripMeter.tsx`, a fixed bottom-left mono odometer counting accumulated scroll. Desktop
+  only, pointer-events none. Mounted in `layout.tsx`.
+- **Magnetic wordmark** — the home hero METEOR drifts toward the cursor via framer-motion springs and settles
+  (`src/app/page.tsx`). Entrance animation kept on the `h1`, magnetic transform on a wrapper `motion.div`.
+
+Deferred (both touch `PageTransition`/`Preloader`, which are entangled with the §15 nav bug.. better to fix
+that first): **gear-shift transitions** (light streaks across the curtain wipe) and **ignition load** (cold-start
+preloader).

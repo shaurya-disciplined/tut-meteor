@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { Reveal } from "@/components/Reveal";
 import { Marquee } from "@/components/Marquee";
 import { Magnetic } from "@/components/Magnetic";
@@ -31,10 +31,22 @@ export default function Home() {
 
   const [hovered, setHovered] = useState<string | null>(null);
 
+  // Magnetic wordmark: METEOR drifts a little toward the cursor, then settles
+  const mx = useSpring(useMotionValue(0), { stiffness: 90, damping: 12 });
+  const my = useSpring(useMotionValue(0), { stiffness: 90, damping: 12 });
+  const onHeroMove = (e: React.MouseEvent) => {
+    mx.set((e.clientX / window.innerWidth - 0.5) * 34);
+    my.set((e.clientY / window.innerHeight - 0.5) * 22);
+  };
+  const onHeroLeave = () => {
+    mx.set(0);
+    my.set(0);
+  };
+
   return (
     <div className="w-full flex flex-col">
       {/* ---------- HERO ---------- */}
-      <section ref={heroRef} className="relative min-h-[100svh] flex flex-col justify-center px-6 lg:px-12 py-24 overflow-hidden">
+      <section ref={heroRef} onMouseMove={onHeroMove} onMouseLeave={onHeroLeave} className="relative min-h-[100svh] flex flex-col justify-center px-6 lg:px-12 py-24 overflow-hidden">
         
         {/* Subtle cinematic center glow to give depth without needing an image */}
         <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.03)_0%,transparent_60%)] pointer-events-none" />
@@ -49,19 +61,21 @@ export default function Home() {
             </div>
           </Reveal>
 
-          {/* Using direct motion for METEOR to ensure it renders flawlessly and heavily stylized */}
-          <motion.h1 
-            initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.8, ease: EASE, delay: 0.1 }}
-            className="font-display text-fluid-hero leading-[0.8] text-text mb-10 tracking-tighter"
-          >
-            METEOR
-          </motion.h1>
+          {/* Magnetic wordmark: entrance animation on the heading, cursor drift on the wrapper */}
+          <motion.div style={{ x: mx, y: my }} className="mb-10">
+            <motion.h1
+              initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              transition={{ duration: 1.8, ease: EASE, delay: 0.1 }}
+              className="font-display text-fluid-hero leading-[0.8] text-text tracking-tighter"
+            >
+              METEOR
+            </motion.h1>
+          </motion.div>
 
           <Reveal delay={0.4} className="max-w-2xl mx-auto mb-14">
             <p className="text-fluid-subtitle text-muted font-light leading-relaxed">
-              Architecting digital ecosystems in the quiet hours.
+              Most of what I make gets made after midnight.
               <br className="hidden md:block" />
               <span className="text-text italic">Cars, code, and dark rainy nights.</span>
             </p>
@@ -117,8 +131,8 @@ export default function Home() {
             <div className="eyebrow">01 · WHO</div>
           </Reveal>
           <p className="font-display text-fluid-display leading-[1.1] text-muted font-light">
-            <span className="text-text">A lifetime spent in quiet execution.</span> Navigating
-            structured academic frontiers by day, forging <span className="text-signal italic">tactical systems</span> and mechanical art after midnight.
+            <span className="text-text">The days go to studying.</span> The nights go to the work I
+            actually care about.. built quietly, on my own clock, for reasons I mostly keep to <span className="text-signal italic">myself.</span>
           </p>
         </div>
       </section>

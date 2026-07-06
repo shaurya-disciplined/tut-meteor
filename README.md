@@ -20,7 +20,9 @@ Reserved on purpose — it implies more than it says.
 
 ## Stack
 Next.js 14 (app router) · TypeScript · Tailwind · Framer Motion · Lenis (smooth scroll) ·
-@xyflow/react (constellation) · local Geist fonts + Bodoni Moda display.
+Three.js + React Three Fiber + drei (persistent WebGL fluid-smoke background) ·
+local Geist fonts + Cormorant Garamond display.
+`@xyflow/react` and `@react-three/postprocessing` are installed but not currently imported.
 
 ## Run
 ```bash

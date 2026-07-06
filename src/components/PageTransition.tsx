@@ -1,15 +1,13 @@
 "use client";
 
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useRef } from "react";
+import { motion, AnimatePresence, useIsPresent } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 /**
  * Curtain-wipe page transition. A void-black panel drops to cover the outgoing
  * page, then lifts to reveal the incoming one. Each route carries its own
- * signature image, ghosted into the black at low opacity, so navigating the
- * site flashes a different statue / nightscape each time. A bronze hairline
- * rides the panel edge; the incoming page fades in with a subtle blur.
+ * signature image, ghosted into the black at low opacity.
  */
 
 type Curtain = { img: string; opacity: number };
@@ -31,23 +29,40 @@ function curtainFor(path: string): Curtain {
   return CURTAIN[path] ?? CURTAIN["/"];
 }
 
-const COVER = "inset(0% 0% 0% 0%)";
-const LIFTED = "inset(0% 0% 100% 0%)";
+
+/**
+ * Next.js App Router swaps the children prop immediately on route change.
+ * This component freezes the outgoing page content so you don't see a glitchy
+ * flash of the new page before the curtain finishes dropping.
+ */
+function FreezeWhenExiting({ children }: { children: React.ReactNode }) {
+  const isPresent = useIsPresent();
+  const childrenRef = useRef(children);
+
+  if (isPresent) {
+    childrenRef.current = children;
+  }
+
+  return <>{childrenRef.current}</>;
+}
 
 export function PageTransition({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const curtain = curtainFor(pathname);
 
+  // A gear shift left-to-right wipe.
+  // exit: covers screen from left to right
+  // initial -> animate: reveals screen from left to right
   return (
     <AnimatePresence mode="wait">
       <motion.div key={pathname} className="w-full min-h-screen flex flex-col flex-grow">
-        {/* Curtain */}
+        {/* Shutter / Gear Shift */}
         <motion.div
           className="fixed inset-0 z-[100] pointer-events-none bg-void overflow-hidden"
-          initial={{ clipPath: COVER }}
-          animate={{ clipPath: LIFTED }}
-          exit={{ clipPath: COVER }}
-          transition={{ duration: 0.75, ease: [0.83, 0, 0.17, 1] }}
+          initial={{ clipPath: "inset(0% 0% 0% 0%)" }}
+          animate={{ clipPath: "inset(0% 0% 0% 100%)" }}
+          exit={{ clipPath: ["inset(0% 100% 0% 0%)", "inset(0% 0% 0% 0%)"] }}
+          transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
         >
           {/* ghosted signature image */}
           <div
@@ -66,18 +81,39 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
                 "radial-gradient(120% 90% at 50% 50%, transparent 35%, rgba(8,8,10,0.9) 100%)",
             }}
           />
-          {/* bronze edge */}
-          <div className="absolute bottom-0 left-0 w-full h-px bg-signal/40" />
+          
+          {/* Motorway Lamp Streaks */}
+          <motion.div
+            className="absolute top-[30%] left-0 w-[150%] h-1 bg-signal/80 blur-sm"
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            exit={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 0.4, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute top-[60%] left-0 w-full h-[2px] bg-white/50 blur-[2px]"
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            exit={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 0.35, delay: 0.05, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute top-[80%] left-0 w-[200%] h-1 bg-signal/40 blur-md"
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            exit={{ x: ["-100%", "100%"] }}
+            transition={{ duration: 0.5, ease: "linear" }}
+          />
         </motion.div>
 
         {/* Content */}
         <motion.div
           className="w-full flex flex-col flex-grow"
-          initial={{ opacity: 0, filter: "blur(6px)" }}
-          animate={{ opacity: 1, filter: "blur(0px)" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+          initial={{ opacity: 0, filter: "blur(8px)", x: 20 }}
+          animate={{ opacity: 1, filter: "blur(0px)", x: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
         >
-          {children}
+          <FreezeWhenExiting>{children}</FreezeWhenExiting>
         </motion.div>
       </motion.div>
     </AnimatePresence>

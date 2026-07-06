@@ -4,18 +4,11 @@ import React, { useEffect, useState } from "react";
 import { Rain } from "./Rain";
 
 /**
- * Fixed cinematic backdrop: a heavily graded looping video (desaturated,
- * darkened, vignetted) with a whisper of rain over it.
- *
- * Swap the vibe by changing BG_VIDEO. Alternates already in /public:
- *   /bg-street-moody.mp4        — moody wet street w/ reflections (default)
- *   /bg-street-reflections.mp4  — brighter rainy street reflections
- *   /bg-night-drive.mp4         — POV night drive, city lights (more motion)
- * object-cover crops the landscape clip cleanly on mobile, so one file serves
- * every breakpoint.
+ * Atmosphere layer that sits over the bespoke WebGL smoke shader (WebGLCanvas).
+ * The smoke is now the real backdrop, so this layer stays transparent and only
+ * adds a cinematic vignette plus a whisper of rain. No opaque fill, or it would
+ * hide the smoke underneath it.
  */
-const BG_VIDEO = "/bg-street-moody.mp4";
-
 export function BackgroundLayer() {
   const [mounted, setMounted] = useState(false);
 
@@ -24,31 +17,19 @@ export function BackgroundLayer() {
   }, []);
 
   return (
-    <div className="fixed inset-0 w-full h-full z-[-10] overflow-hidden pointer-events-none bg-void">
-      {/* Graded video */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
-        style={{ filter: "grayscale(0.6) brightness(0.5) contrast(1.05)" }}
-      >
-        <source src={BG_VIDEO} type="video/mp4" />
-      </video>
-
-      {/* Cinematic grade: vignette + top/bottom crush toward pure void */}
-      <div className="absolute inset-0 bg-void/40" />
+    <div className="fixed inset-0 w-full h-full z-[-10] overflow-hidden pointer-events-none">
+      {/* top and bottom crush toward pure void for a letterboxed, cinematic frame */}
       <div className="absolute inset-0 bg-gradient-to-b from-void via-transparent to-void" />
+      {/* soft vignette, transparent through the center so the smoke reads */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 40%, transparent 30%, rgba(8,8,10,0.85) 100%)",
+            "radial-gradient(120% 90% at 50% 40%, transparent 45%, rgba(8,8,10,0.72) 100%)",
         }}
       />
 
-      {/* Whisper of rain */}
+      {/* Whisper of rain over the smoke */}
       {mounted && (
         <>
           <Rain dropCount={30} baseOpacity={0.18} speedMultiplier={0.6} sharpness="soft" className="z-10" />

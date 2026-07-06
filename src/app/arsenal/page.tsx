@@ -22,7 +22,7 @@ const PROJECTS: Project[] = [
     status: "Prototype",
     tags: ["LLMs", "Memory fabric", "Self evolving", "Systems"],
     body:
-      "A dynamic, self evolving memory fabric for large language models. Utilizes an orchestration engine that acts as a cognitive arbiter.. evaluating, index pruning, and restructuring recall vectors in real time. This feedback loop resolves context decay and prevents catastrophic forgetting. Engineered purely out of curiosity.",
+      "A memory layer for AI models that looks after itself. A second model sits on top like a gatekeeper, deciding what is worth keeping, what to quietly let go, and what to pull back the moment it matters. I built it to see if a model could stop losing the thread halfway through. Made purely out of curiosity.",
   },
   {
     n: "02",
@@ -30,7 +30,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Web", "Flow state", "Sprint"],
     body:
-      "A high performance digital environment structured during a continuous multi day sprint. An exercise in hyper focus and rapid system compilation, verifying the throughput of the development engine under pressure.",
+      "A site I built in one long unbroken stretch, several days of pure flow with the rest of the world switched off. Less about the result and more about seeing how far the focus could go before it snapped.",
     href: "https://notrik-ten.vercel.app/",
     cta: "Visit Notrik",
   },
@@ -40,7 +40,7 @@ const PROJECTS: Project[] = [
     status: "Archived · peaked 10k+",
     tags: ["Instagram", "Curation", "Growth", "Brand"],
     body:
-      "An experiment in algorithmic attention and curation. Built and scaled a digital audience past 10,000 users solely on targeted aesthetics and visual consistency. Designed to study how digital attention moves, pools, and converts.",
+      "A theme page I grew past ten thousand followers on nothing but taste and consistency. It taught me how attention moves online, where it pools, and how fast it leaves. I stopped posting once I had learned what I came there to learn.",
     href: "https://www.instagram.com/mintedmile/",
     cta: "View the page",
   },
@@ -50,7 +50,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Next.js", "TypeScript", "Tailwind", "Groq API"],
     body:
-      "An immersive conversational client powered by Groq. Built from zero to deployment within a ten day sprint. Styled with reactive glassmorphism, weather driven particle dynamics, and absolute real time stream processing.",
+      "My first real AI chatbot, built end to end in under ten days. Dark glass everywhere, weather that reacts to the conversation, and replies that stream in the second you hit send. The one that proved to me I could actually ship.",
     href: "https://vibe-link-delta.vercel.app",
     cta: "Launch Vibe Link",
   },
@@ -60,7 +60,7 @@ const PROJECTS: Project[] = [
     status: "Solo build",
     tags: ["Brand identity", "Creatives", "Website", "Marketing"],
     body:
-      "A streetwear label built single handedly. Owned the entire pipeline: from initial brand positioning and collection identity to digital commerce deployment and algorithmic target marketing.",
+      "A clothing brand I ran on my own, top to bottom. The name, the look, the site, the ads, all of it mine. My first taste of taking an idea the whole way, from a thought in my head to something people could actually buy.",
   },
 ];
  
@@ -79,7 +79,7 @@ export default function ArsenalPage() {
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-md">
             <p className="text-fluid-subtitle text-muted font-light">
-              Digital assets forged in the quiet hours. Some shipped, some shelved.. all built.
+              Things I made after midnight. Some shipped, some shelved.. all mine.
             </p>
           </Reveal>
         </div>
