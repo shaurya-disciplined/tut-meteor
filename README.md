@@ -1,46 +1,33 @@
-# tut::meteo :: Know me
+# tut::meteor
 
-> My personal corner of the internet.
-> Batman energy. Unfiltered vibe. Real story.
+> A builder who works while the city sleeps.
+> Personal "know me" site — one link for the people I meet online, so I never have to explain myself twice.
 
-## 🌐 Live Site
-[tut::meteor.vercel.app](https://tut&#45;meteor.vercel.app)
+## The vibe — "Nocturne"
+Automotive-cinematic luxury. Matte black, one restrained bronze accent, high-contrast editorial
+typography, film grain, smooth scroll, custom cursor, kinetic type, and slow weighty motion.
+Reserved on purpose — it implies more than it says.
 
-## ✨ What is this?
-This website exists so I do not have to keep explaining myself.
-Instead of repeating my story in every DM or comment, I can just send one link.
+## Sections
+- **/** — cinematic home + index
+- **/story** — where the signal comes from
+- **/arsenal** — things built after midnight (Vibe Link · MintedMile · MEGADRESS · Notrik · AetherMem)
+- **/library** — the books that shaped how I think
+- **/signal** — reach out (Discord · Email · Instagram · GitHub · LinkedIn)
+- **/codex** — a few rules I keep (and won't explain)
+- **/web** — the constellation (custom animated node map)
+- **/midnight** — the cars obsession (cinematic video shrine)
 
-It is my personality, my journey, my opinions, the books that shaped me, and the things I am building :: all in one place. Think of it as my public bio page, way less corporate than LinkedIn and more *me*.
+## Stack
+Next.js 14 (app router) · TypeScript · Tailwind · Framer Motion · Lenis (smooth scroll) ·
+@xyflow/react (constellation) · local Geist fonts + Bodoni Moda display.
 
-## 🦇 Theme and Vibe
-* Batman inspired aesthetic :: dark, ambitious, calculated, with style
-* Smooth animations and interactions
-* Built to feel premium and personal at the same time
-
-## 📖 Sections
-* **My Story** :: Where I come from and what I am chasing
-* **Bookshelf** :: Every book I have read + my honest thoughts
-* **Opinions** :: What I think about things I have experienced
-* **Projects** :: Things I have built :: AI tools, landing pages, experiments
-* **The Titan Mindset** :: My philosophy and discipline systems
-
-## 🛠 Tech Stack
-* Next.js + TypeScript
-* Tailwind CSS + Framer Motion
-* Glassmorphism + dark theme
-* Fully responsive
-
-## 🚀 Goals
-* Share one link instead of explaining myself fifty times
-* Show personality + depth
-* Build in public
-
-## 🏃 Run Locally
-
+## Run
 ```bash
 npm install
 npm run dev
 ```
 
-📌 Note :: This site is a living project. It will evolve with me.
-Built with obsession and vibe coding.
+## Notes
+- Full project context, decisions, and content live in `context-tut-meteor.md` — read that first.
+- Local/personal project. Background video + imagery in `/public` are swappable assets.

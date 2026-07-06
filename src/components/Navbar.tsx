@@ -1,140 +1,136 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useCinematic } from "./CinematicOverlay";
+import { usePathname } from "next/navigation";
+import { Magnetic } from "./Magnetic";
 
 const NAV_LINKS = [
-  { label: "The Story", href: "/story", yDrift: [-5, 5, -5], delay: 0 },
-  { label: "The Arsenal", href: "/arsenal", yDrift: [5, -5, 5], delay: 1 },
-  { label: "The Signal", href: "/web", yDrift: [-3, 6, -3], delay: 0.5 },
+  { label: "Story", href: "/story", index: "01" },
+  { label: "Arsenal", href: "/arsenal", index: "02" },
+  { label: "Library", href: "/library", index: "03" },
+  { label: "Constellation", href: "/web", index: "04" },
+  { label: "Midnight", href: "/midnight", index: "05" },
+  { label: "Signal", href: "/signal", index: "06" },
 ];
 
 export function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
 
-  const { triggerSignal } = useCinematic();
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-  const handleLinkClick = () => {
-    setMobileMenuOpen(false);
-  };
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <>
-      {/* --- Desktop Floating Header Elements --- */}
-      
-      {/* 1. Floating Logo (Top Left) */}
-      <motion.div 
-        className="fixed top-8 left-6 lg:left-12 z-50 drop-shadow-lg pointer-events-auto"
-        animate={{ y: [0, -6, 0], rotate: [-1, 1, -1] }}
-        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      <motion.header
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+        className={`fixed top-0 left-0 w-full z-[80] transition-colors duration-500 ${
+          scrolled ? "bg-void/60 backdrop-blur-md border-b border-line" : "bg-transparent border-b border-transparent"
+        }`}
       >
-        <Link 
-          href="/"
-          onClick={() => handleLinkClick()}
-          className="text-white/90 hover:text-white transition-colors uppercase tracking-[4px] text-sm font-medium focus:outline-none"
-        >
-          tut.meteor
-        </Link>
-      </motion.div>
-
-      {/* 2. Floating Nav Links (Top Center) */}
-      <div className="fixed top-8 left-1/2 -translate-x-1/2 z-50 hidden md:flex items-center gap-12 pointer-events-none">
-        {NAV_LINKS.map((link) => (
-          <motion.div
-            key={link.label}
-            className="group relative pointer-events-auto drop-shadow-md"
-            animate={{ y: link.yDrift }}
-            transition={{ duration: 6 + Math.random() * 2, repeat: Infinity, ease: "easeInOut", delay: link.delay }}
-          >
+        <nav className="flex items-center justify-between px-6 lg:px-12 h-16 md:h-20">
+          {/* Wordmark */}
+          <Magnetic strength={10}>
             <Link
-              href={link.href}
-              onClick={() => handleLinkClick()}
-              className="text-sm font-medium text-white/70 hover:text-white transition-colors py-2 block"
+              href="/"
+              data-cursor="home"
+              className="font-mono text-xs uppercase tracking-[0.35em] text-text hover:text-signal transition-colors"
             >
-              {link.label}
+              tut.meteor
             </Link>
-            <span className="absolute left-0 -bottom-1 h-[1px] w-0 bg-white/50 transition-all duration-300 group-hover:w-full" />
-          </motion.div>
-        ))}
-      </div>
+          </Magnetic>
 
-      {/* 3. Floating Discord Button (Top Right) */}
-      <motion.button
-        onClick={() => triggerSignal("/connect")}
-        className="fixed top-6 right-6 lg:right-12 z-50 hidden md:block px-5 py-2 rounded-xl text-sm font-medium text-white/90 border border-white/20 hover:border-white/40 hover:text-white transition-all duration-300 focus:outline-none bg-[#050505]/20 backdrop-blur-md drop-shadow-lg pointer-events-auto"
-        animate={{ y: [0, 6, 0], rotate: [0, -1, 0] }}
-        transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-      >
-        Message on Discord
-      </motion.button>
+          {/* Desktop links */}
+          <div className="hidden md:flex items-center gap-4 lg:gap-7">
+            {NAV_LINKS.map((link) => {
+              const active = pathname === link.href;
+              return (
+                <Magnetic key={link.href} strength={8}>
+                  <Link
+                    href={link.href}
+                    className="group relative flex items-center gap-1.5 py-2"
+                  >
+                    <span className="font-mono text-[9px] text-signal/70">{link.index}</span>
+                    <span
+                      className={`text-sm tracking-wide transition-colors ${
+                        active ? "text-text" : "text-muted group-hover:text-text"
+                      }`}
+                    >
+                      {link.label}
+                    </span>
+                    <span
+                      className={`absolute left-0 -bottom-0.5 h-px bg-signal transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                        active ? "w-full" : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </Link>
+                </Magnetic>
+              );
+            })}
+          </div>
 
-      {/* --- Mobile Floating Toggle (Top Right) --- */}
-      <motion.button
-        className="fixed top-6 right-6 z-50 md:hidden text-white/90 hover:text-white p-3 rounded-full bg-[#050505]/20 backdrop-blur-md border border-white/10 shadow-lg"
-        onClick={() => setMobileMenuOpen(true)}
-        animate={{ y: [0, -4, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <Menu size={20} strokeWidth={2} />
-      </motion.button>
-
-      {/* --- Mobile Floating Glass Menu Overlay --- */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="fixed inset-4 z-[60] bg-[#0a0a0f]/80 backdrop-blur-xl border border-white/10 rounded-3xl flex flex-col overflow-hidden shadow-2xl"
+          {/* Mobile toggle */}
+          <button
+            onClick={() => setOpen((v) => !v)}
+            className="md:hidden flex flex-col gap-1.5 p-2"
+            aria-label="Menu"
           >
-            {/* Mobile Header */}
-            <div className="p-6 flex items-center justify-between">
-              <span className="text-white/70 uppercase tracking-[4px] text-xs font-medium">
-                Navigation
-              </span>
-              <button
-                className="text-white/90 hover:text-white p-2 rounded-full bg-white/5"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <X size={20} strokeWidth={2} />
-              </button>
-            </div>
+            <motion.span
+              animate={{ rotate: open ? 45 : 0, y: open ? 6 : 0 }}
+              className="block w-6 h-px bg-text"
+            />
+            <motion.span
+              animate={{ opacity: open ? 0 : 1 }}
+              className="block w-6 h-px bg-text"
+            />
+            <motion.span
+              animate={{ rotate: open ? -45 : 0, y: open ? -6 : 0 }}
+              className="block w-6 h-px bg-text"
+            />
+          </button>
+        </nav>
+      </motion.header>
 
-            {/* Mobile Nav Links */}
-            <div className="flex-1 flex flex-col items-center justify-center gap-10 p-6">
+      {/* Mobile overlay */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="fixed inset-0 z-[79] bg-void/95 backdrop-blur-xl md:hidden flex flex-col justify-center px-8"
+          >
+            <div className="flex flex-col gap-2">
               {NAV_LINKS.map((link, i) => (
                 <motion.div
-                  key={link.label}
-                  initial={{ opacity: 0, y: 20 }}
+                  key={link.href}
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 * i, duration: 0.4 }}
+                  transition={{ delay: 0.1 + i * 0.07, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                 >
                   <Link
                     href={link.href}
-                    onClick={() => handleLinkClick()}
-                    className="text-2xl font-medium text-white/90 hover:text-white transition-colors"
+                    className="flex items-baseline gap-3 py-3 border-b border-line"
                   >
-                    {link.label}
+                    <span className="font-mono text-xs text-signal/70">{link.index}</span>
+                    <span className="font-display text-4xl text-text">{link.label}</span>
                   </Link>
                 </motion.div>
               ))}
-
-              <motion.button
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  triggerSignal("/connect");
-                }}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                className="mt-6 px-8 py-4 rounded-2xl text-lg font-medium text-white/90 border border-white/20 bg-white/5 hover:bg-white/10 transition-all w-full max-w-xs"
-              >
-                Message on Discord
-              </motion.button>
             </div>
           </motion.div>
         )}

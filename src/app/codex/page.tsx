@@ -1,108 +1,88 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { DriftItem } from "@/components/floating/DriftItem";
+import { Reveal } from "@/components/Reveal";
+import { Footer } from "@/components/Footer";
+import { GhostImage } from "@/components/GhostImage";
 
-const RULES = [
-  { 
-    id: "r1", 
-    text: "BUILD STRONG FUNDAMENTALS FIRST.", 
-    detail: "Discipline, problem solving and long-term leverage matter more than short bursts of motivation." 
-  },
-  { 
-    id: "r2", 
-    text: "I DON'T WAIT FOR PERFECT CONDITIONS. I SHIP ANYWAY.", 
-    detail: "Small projects, real experiments, learning in public." 
-  },
-  { 
-    id: "r3", 
-    text: "THE DUAL MISSION.", 
-    detail: "Crack JEE 2027 with a strong rank while simultaneously building real skills and projects on the side. Both are important. One is not waiting for the other." 
-  },
+const CREED = [
+  { line: "Play long.", tail: "Talk little." },
+  { line: "Systems", tail: "over moods." },
+  { line: "Build in the dark.", tail: "Show the light." },
+  { line: "Most of it", tail: "stays off the table." },
 ];
 
 export default function CodexPage() {
-  const [highlightedRule, setHighlightedRule] = useState<string | null>(null);
-
   return (
-    <div className="relative min-h-[100svh] w-full pt-32 pb-48 px-6 lg:px-24 flex flex-col items-center">
-      
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-4xl lg:text-6xl font-bold tracking-tight text-white mb-32 text-center"
-      >
-        The <span className="text-accent">Codex</span>
-      </motion.h1>
-
-      <div className="w-full max-w-4xl flex flex-col gap-32">
-        
-        {/* Section: Identity */}
-        <motion.section 
-          initial={{ opacity: 0, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className="text-center"
-        >
-          <DriftItem duration={8} yDrift={[0, -10, 0]}>
-            <p className="text-2xl md:text-4xl font-serif italic text-white/90 leading-relaxed">
-              &quot;This is not just about clearing an exam. This is about becoming dangerous with my skills, my discipline and my vision.&quot;
+    <div className="relative w-full min-h-screen flex flex-col bg-void">
+      <section className="px-6 lg:px-12 pt-40 md:pt-52 pb-24">
+        <div className="max-w-4xl mx-auto">
+          <Reveal>
+            <div className="eyebrow flex items-center gap-3">
+              <span className="inline-block w-8 h-px bg-signal" /> THE CODEX
+            </div>
+          </Reveal>
+          <Reveal delay={0.15} className="mt-8">
+            <p className="text-lg md:text-xl text-muted font-light max-w-md">
+              A few rules I keep. I won&apos;t explain them.
             </p>
-          </DriftItem>
-        </motion.section>
+          </Reveal>
+        </div>
+      </section>
 
-        {/* Section: Unbreakable Rules */}
-        <section className="relative">
-          <h2 className="text-xl font-mono text-accent tracking-widest uppercase mb-12 text-center">Unbreakable Rules</h2>
-          
-          <div className="flex flex-col gap-12">
-            {RULES.map((rule, i) => (
-              <DriftItem key={rule.id} delay={i * 0.4} duration={6 + i} yDrift={[0, 8, 0]}>
-                <motion.div 
-                  className={`text-center transition-all duration-700 ${
-                    highlightedRule === rule.id ? "scale-110" : highlightedRule ? "opacity-30 blur-sm" : "opacity-100"
-                  }`}
-                >
-                  <button 
-                    onClick={() => setHighlightedRule(highlightedRule === rule.id ? null : rule.id)}
-                    className={`text-xl md:text-3xl font-bold transition-colors duration-500 block w-full text-center ${
-                      highlightedRule === rule.id ? "text-accent drop-shadow-[0_0_25px_rgba(250,204,21,0.8)]" : "text-white/70 hover:text-white"
-                    }`}
-                  >
-                    {rule.text}
-                  </button>
-                  {highlightedRule === rule.id && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="mt-6 text-white/80 font-light text-lg md:text-xl max-w-2xl mx-auto leading-relaxed"
-                    >
-                      {rule.detail}
-                    </motion.p>
-                  )}
-                </motion.div>
-              </DriftItem>
-            ))}
-          </div>
-        </section>
+      <section className="relative overflow-hidden px-6 lg:px-12">
+        {/* ghosted busts behind the creed — Caesar on the right, the dark figure on the left */}
+        <GhostImage
+          src="/codex-ghost.jpg"
+          side="right"
+          widthClass="w-[55vw]"
+          opacity={0.1}
+          parallax
+          className="hidden md:block"
+        />
+        <GhostImage
+          src="/images/batman-shadow.jpg"
+          side="left"
+          widthClass="w-[42vw]"
+          opacity={0.14}
+          parallax
+          className="hidden md:block"
+        />
+        <div className="relative z-10 max-w-5xl mx-auto flex flex-col">
+          {CREED.map((c, i) => (
+            <div key={i} className="border-t border-line py-16 md:py-28">
+              <motion.h2
+                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                className="font-display text-5xl md:text-8xl leading-[0.95]"
+              >
+                <span className="text-text">{c.line} </span>
+                <span className="text-muted italic">{c.tail}</span>
+              </motion.h2>
+            </div>
+          ))}
+          <div className="border-t border-line" />
+        </div>
+      </section>
 
-        {/* Section: Vision */}
-        <motion.section 
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-center bg-[#0a0a0f]/40 backdrop-blur-md p-12 rounded-3xl border border-white/5"
-        >
-          <h2 className="text-xl font-mono text-white/50 tracking-widest uppercase mb-8">Long-Term Vision</h2>
-          <p className="text-lg md:text-xl text-white/80 font-light leading-relaxed">
-            Long term I want financial independence and the ability to create real impact. I’m playing the long game. Building myself into someone who can actually move things in this world.
-          </p>
-        </motion.section>
+      <section className="px-6 lg:px-12 py-32 md:py-48">
+        <div className="max-w-3xl mx-auto text-center">
+          <motion.p
+            initial={{ opacity: 0, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, filter: "blur(0px)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display italic text-2xl md:text-4xl text-muted"
+          >
+            Everything here is true. None of it is the whole story.
+          </motion.p>
+        </div>
+      </section>
 
-      </div>
+      <Footer />
     </div>
   );
 }

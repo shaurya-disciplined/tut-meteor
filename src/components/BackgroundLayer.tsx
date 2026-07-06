@@ -1,8 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import { Rain } from "./Rain";
+
+/**
+ * Fixed cinematic backdrop: a heavily graded looping video (desaturated,
+ * darkened, vignetted) with a whisper of rain over it.
+ *
+ * Swap the vibe by changing BG_VIDEO. Alternates already in /public:
+ *   /bg-street-moody.mp4        — moody wet street w/ reflections (default)
+ *   /bg-street-reflections.mp4  — brighter rainy street reflections
+ *   /bg-night-drive.mp4         — POV night drive, city lights (more motion)
+ * object-cover crops the landscape clip cleanly on mobile, so one file serves
+ * every breakpoint.
+ */
+const BG_VIDEO = "/bg-street-moody.mp4";
 
 export function BackgroundLayer() {
   const [mounted, setMounted] = useState(false);
@@ -11,63 +23,38 @@ export function BackgroundLayer() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null; // Avoid hydration mismatch for random bats
-
   return (
-    <div className="fixed inset-0 w-full h-full z-[-10] overflow-hidden pointer-events-none bg-[#050505]">
-      {/* Background Videos */}
-      <video 
-        autoPlay loop muted playsInline 
-        className="absolute inset-0 w-full h-full object-cover hidden md:block blur-[10px] scale-110 opacity-60"
+    <div className="fixed inset-0 w-full h-full z-[-10] overflow-hidden pointer-events-none bg-void">
+      {/* Graded video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        style={{ filter: "grayscale(0.6) brightness(0.5) contrast(1.05)" }}
       >
-        <source src="/bg-desktop-1.mp4" type="video/mp4" />
+        <source src={BG_VIDEO} type="video/mp4" />
       </video>
-      <video 
-        autoPlay loop muted playsInline 
-        className="absolute inset-0 w-full h-full object-cover block md:hidden blur-[10px] scale-110 opacity-60"
-      >
-        <source src="/bg-mobile-1.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-black/50 mix-blend-overlay"></div>
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/40 to-[#050505] z-10"></div>
 
-      {/* Far Background Rain (Soft & Slow) */}
-      <Rain dropCount={40} baseOpacity={0.3} speedMultiplier={0.5} sharpness="soft" className="z-10" />
+      {/* Cinematic grade: vignette + top/bottom crush toward pure void */}
+      <div className="absolute inset-0 bg-void/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-void via-transparent to-void" />
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(120% 90% at 50% 40%, transparent 30%, rgba(8,8,10,0.85) 100%)",
+        }}
+      />
 
-      {/* Foreground Rain (Sharp & Fast) */}
-      <Rain dropCount={40} baseOpacity={0.8} speedMultiplier={1.5} sharpness="sharp" className="z-40" />
-
-      {/* Floating Bats Layer (Deep) */}
-      <div className="absolute inset-0 z-20 pointer-events-none opacity-30">
-        {[...Array(8)].map((_, i) => {
-          const size = 16 + Math.random() * 24;
-          return (
-            <motion.div
-              key={`global-bat-${i}`}
-              className="absolute text-accent/50"
-              style={{
-                top: `${10 + Math.random() * 80}%`,
-                left: `${5 + Math.random() * 90}%`,
-              }}
-              animate={{
-                y: [0, -30 + Math.random() * -20, 0],
-                x: [0, 20 + Math.random() * 40, -10, 0],
-                rotate: [0, -10, 15, 0]
-              }}
-              transition={{
-                duration: 6 + Math.random() * 6,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: Math.random() * 4
-              }}
-            >
-              <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C8 6 4 8 2 12C6 11 8 13 10 15C9 13 11 11 12 11C13 11 15 13 14 15C16 13 18 11 22 12C20 8 16 6 12 2Z" />
-              </svg>
-            </motion.div>
-          );
-        })}
-      </div>
+      {/* Whisper of rain */}
+      {mounted && (
+        <>
+          <Rain dropCount={30} baseOpacity={0.18} speedMultiplier={0.6} sharpness="soft" className="z-10" />
+          <Rain dropCount={24} baseOpacity={0.4} speedMultiplier={1.4} sharpness="sharp" className="z-10" />
+        </>
+      )}
     </div>
   );
 }

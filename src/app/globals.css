@@ -3,45 +3,111 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-wipe: cubic-bezier(0.83, 0, 0.17, 1);
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
-    @apply bg-background text-body font-sans antialiased;
+    @apply bg-void text-text font-sans antialiased;
+    overflow-x: hidden;
   }
+
   h1, h2, h3, h4, h5, h6 {
-    @apply text-heading font-heading tracking-tight;
+    @apply font-display tracking-tight;
+  }
+
+  ::selection {
+    background: rgba(176, 136, 90, 0.28);
+    color: #fff;
+  }
+
+  /* Thin, quiet scrollbar */
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.16); }
+}
+
+@layer components {
+  /* Mono eyebrow label used across the site */
+  .eyebrow {
+    @apply font-mono text-[10px] md:text-xs uppercase tracking-eyebrow text-muted;
+  }
+
+  /* Hairline divider */
+  .hairline {
+    @apply h-px w-full bg-line;
   }
 }
 
+/* ---------- Lenis smooth scroll ---------- */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------- Custom cursor: hide native cursor on fine pointers ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .cursor-hidden,
+  .cursor-hidden * {
+    cursor: none !important;
+  }
+}
+
+/* ---------- Film grain overlay ---------- */
+.grain-overlay {
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 90;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* ---------- Rain (kept, refined) ---------- */
 @keyframes rain-fall {
-  0% {
-    transform: translateY(-100vh) rotate(10deg);
-  }
-  100% {
-    transform: translateY(100vh) rotate(10deg);
-  }
+  0% { transform: translateY(-100vh) rotate(8deg); }
+  100% { transform: translateY(100vh) rotate(8deg); }
 }
-
 .rain-drop {
   position: absolute;
   top: -50px;
   width: 1px;
   height: 60px;
-  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.2));
+  background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.18));
   animation: rain-fall linear infinite;
 }
 
-/* ReactFlow Custom Blur Styles */
-.has-expanded-nodes .react-flow__edge {
-  opacity: 0.15;
-  filter: blur(3px);
-  transition: all 0.3s ease;
-}
+/* ---------- ReactFlow constellation overrides ---------- */
+.has-expanded-nodes .react-flow__edge { opacity: 0.1; filter: blur(2px); transition: all 0.4s var(--ease-expo); }
+.has-expanded-nodes .react-flow__node:not(.is-expanded) { opacity: 0.25; filter: blur(3px); transition: all 0.4s var(--ease-expo); }
+.react-flow__edge, .react-flow__node { transition: all 0.4s var(--ease-expo); }
+.react-flow__attribution { display: none !important; }
 
-.has-expanded-nodes .react-flow__node:not(.is-expanded) {
-  opacity: 0.3;
-  filter: blur(4px);
-  transition: all 0.3s ease;
-}
-
-.react-flow__edge, .react-flow__node {
-  transition: all 0.3s ease;
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .grain-overlay { display: none; }
 }

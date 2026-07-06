@@ -1,178 +1,215 @@
 "use client";
 
-import React, { useCallback } from "react";
-import {
-  ReactFlow,
-  Controls,
-  useNodesState,
-  useEdgesState,
-  addEdge,
-  Handle,
-  Position,
-  Node,
-  Edge,
-  NodeProps,
-  Connection,
-  useReactFlow,
-} from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
-import { motion, AnimatePresence } from "framer-motion";
-import { GlassCard } from "@/components/floating/GlassCard";
+import React, { useRef, useState } from "react";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { ShootingStars } from "@/components/ShootingStars";
 
-type GlassNodeData = {
+type NodeT = {
+  id: string;
   label: string;
-  icon?: string;
-  desc?: string;
+  x: number; // % within the stage
+  y: number;
+  desc: string;
   link?: string;
   linkText?: string;
-  isExpanded?: boolean;
 };
 
-// Custom Glass Node Component
-const GlassNode = ({ id, data }: NodeProps<Node<GlassNodeData>>) => {
-  const { setNodes } = useReactFlow();
+const NODES: NodeT[] = [
+  { id: "mission", label: "The Mission", x: 25, y: 24, desc: "JEE 2027. Quiet, relentless, and mostly invisible from the outside. The one thing that comes before everything else." },
+  { id: "building", label: "Building", x: 75, y: 24, desc: "AI, agents, and interfaces made after midnight. Ideas moved from head to shipped, fast." },
+  { id: "vibe-link", label: "Vibe Link", x: 16, y: 53, desc: "First full AI product, built from zero in under ten days.", link: "https://vibe-link-delta.vercel.app", linkText: "Launch" },
+  { id: "frame", label: "The Frame", x: 84, y: 53, desc: "Training, discipline, and a body kept as sharp as the mind." },
+  { id: "frequency", label: "The Frequency", x: 33, y: 80, desc: "Fast cars, dark rain, late music, and long conversations about systems." },
+  { id: "long-game", label: "The Long Game", x: 67, y: 80, desc: "Leverage over any single result. Building toward something that outlasts an exam." },
+];
 
-  const handleClose = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setNodes((nds) => 
-      nds.map(n => n.id === id ? { ...n, data: { ...n.data, isExpanded: false } } : n)
-    );
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+export default function ConstellationPage() {
+  const [selected, setSelected] = useState<string | null>(null);
+  const selectedNode = NODES.find((n) => n.id === selected) || null;
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // mouse parallax
+  const cx = useSpring(useMotionValue(0), { stiffness: 60, damping: 18 });
+  const cy = useSpring(useMotionValue(0), { stiffness: 60, damping: 18 });
+  const sx = useSpring(useMotionValue(0), { stiffness: 40, damping: 20 });
+  const sy = useSpring(useMotionValue(0), { stiffness: 40, damping: 20 });
+
+  const onMove = (e: React.MouseEvent) => {
+    const px = e.clientX / window.innerWidth - 0.5;
+    const py = e.clientY / window.innerHeight - 0.5;
+    cx.set(px * -26);
+    cy.set(py * -26);
+    sx.set(px * -10);
+    sy.set(py * -10);
   };
 
   return (
-    <div className={`relative px-6 py-3 rounded-2xl backdrop-blur-xl border transition-all duration-300 z-50 ${
-      data.isExpanded ? "bg-accent/20 border-accent shadow-[0_0_20px_rgba(250,204,21,0.4)]" : "bg-[#0a0a0f]/60 border-white/10 shadow-lg"
-    }`}>
-      <Handle type="target" position={Position.Top} className="opacity-0" />
-      <div className="flex items-center gap-3 relative z-10">
-        {data.icon && <span className="text-xl">{data.icon}</span>}
-        <span className={`font-medium ${data.isExpanded ? "text-accent" : "text-white"}`}>{data.label}</span>
-      </div>
-      <Handle type="source" position={Position.Bottom} className="opacity-0" />
+    <div
+      ref={containerRef}
+      onMouseMove={onMove}
+      onClick={() => setSelected(null)}
+      className="relative w-full h-[100svh] overflow-hidden"
+    >
+      {/* darken the page video so the constellation reads */}
+      <div className="absolute inset-0 bg-void/55" />
+      {/* black hole sunk deep behind the center */}
+      <div
+        aria-hidden
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vmin] h-[120vmin] bg-center bg-contain bg-no-repeat pointer-events-none"
+        style={{ backgroundImage: "url(/images/black-hole.jpg)", opacity: 0.1, filter: "grayscale(0.5) contrast(1.05)" }}
+      />
+      <div
+        className="absolute inset-0"
+        style={{ background: "radial-gradient(120% 90% at 50% 45%, transparent 30%, rgba(8,8,10,0.85) 100%)" }}
+      />
 
-      {/* In-place Pop-up */}
+      {/* starfield + meteors (parallax layer) */}
+      <motion.div style={{ x: sx, y: sy }} className="absolute inset-0 pointer-events-none">
+        <ShootingStars starCount={46} streaks={2} />
+      </motion.div>
+
+      {/* header */}
+      <div className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 z-30 text-center pointer-events-none px-4">
+        <div className="eyebrow mb-3">04 · THE CONSTELLATION</div>
+        <h1 className="font-display text-4xl md:text-5xl text-text">Everything, connected</h1>
+        <p className="font-mono text-[10px] uppercase tracking-widest text-muted mt-3">
+          Move to explore · tap a node
+        </p>
+      </div>
+
+      {/* constellation (parallax layer) */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <motion.div style={{ x: cx, y: cy }} className="relative w-[min(92vw,880px)] aspect-[3/2]">
+          {/* connection lines */}
+          <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
+            {NODES.map((n, i) => {
+              const dimmed = selected !== null && selected !== n.id;
+              return (
+                <g key={n.id}>
+                  <line
+                    x1="50" y1="50" x2={n.x} y2={n.y}
+                    stroke="#B0885A" strokeWidth={1} vectorEffect="non-scaling-stroke"
+                    opacity={dimmed ? 0.07 : 0.2}
+                  />
+                  <motion.line
+                    x1="50" y1="50" x2={n.x} y2={n.y}
+                    stroke="#B0885A" strokeWidth={1.5} vectorEffect="non-scaling-stroke"
+                    strokeDasharray="3 11"
+                    initial={{ strokeDashoffset: 0 }}
+                    animate={{
+                      strokeDashoffset: [0, -28],
+                      opacity: selected === n.id ? 0.9 : dimmed ? 0.05 : 0.4,
+                    }}
+                    transition={{
+                      strokeDashoffset: { duration: 2.2 + i * 0.25, repeat: Infinity, ease: "linear" },
+                      opacity: { duration: 0.5 },
+                    }}
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* center — the beacon */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
+            <span className="relative flex items-center justify-center">
+              {[0, 1].map((k) => (
+                <motion.span
+                  key={k}
+                  className="absolute rounded-full border border-signal/40"
+                  style={{ width: 56, height: 56 }}
+                  animate={{ scale: [1, 2.4], opacity: [0.5, 0] }}
+                  transition={{ duration: 3.4, repeat: Infinity, ease: "easeOut", delay: k * 1.7 }}
+                />
+              ))}
+              <span className="w-[68px] h-[68px] rounded-full bg-signal/10 border border-signal/50 backdrop-blur-sm flex items-center justify-center">
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-signal">Meteor</span>
+              </span>
+            </span>
+          </div>
+
+          {/* satellite nodes */}
+          {NODES.map((n, i) => {
+            const isSel = selected === n.id;
+            const dimmed = selected !== null && !isSel;
+            return (
+              <motion.button
+                key={n.id}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setSelected(isSel ? null : n.id);
+                }}
+                data-cursor="open"
+                className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group flex flex-col items-center gap-2 focus:outline-none"
+                style={{ left: `${n.x}%`, top: `${n.y}%` }}
+                initial={{ opacity: 0, scale: 0.4 }}
+                animate={{ opacity: dimmed ? 0.4 : 1, scale: 1 }}
+                transition={{ duration: 0.7, ease: EASE, delay: 0.35 + i * 0.08 }}
+              >
+                <span className="relative flex items-center justify-center h-10 w-10">
+                  <span
+                    className={`absolute rounded-full border transition-all duration-500 ${
+                      isSel ? "w-10 h-10 border-signal" : "w-7 h-7 border-line group-hover:border-signal/60"
+                    }`}
+                  />
+                  <span
+                    className={`rounded-full transition-all duration-500 ${
+                      isSel ? "w-2.5 h-2.5 bg-signal" : "w-1.5 h-1.5 bg-muted group-hover:bg-signal"
+                    }`}
+                  />
+                </span>
+                <span
+                  className={`font-mono text-[10px] md:text-[11px] uppercase tracking-widest whitespace-nowrap transition-colors duration-500 ${
+                    isSel ? "text-text" : "text-muted group-hover:text-text"
+                  }`}
+                >
+                  {n.label}
+                </span>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      </div>
+
+      {/* detail panel */}
       <AnimatePresence>
-        {data.isExpanded && data.desc && (
-          <motion.div 
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 md:w-80 z-[100] cursor-default"
+        {selectedNode && (
+          <motion.div
+            key={selectedNode.id}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.5, ease: EASE }}
             onClick={(e) => e.stopPropagation()}
-            onDoubleClick={(e) => e.stopPropagation()}
+            className="fixed z-[60] left-4 right-4 bottom-6 md:left-auto md:right-10 md:bottom-auto md:top-1/2 md:-translate-y-1/2 md:w-80"
           >
-            <GlassCard glow className="p-5 shadow-2xl">
-              <h3 className="text-lg font-bold text-accent mb-3">{data.label}</h3>
-              <p className="text-white/80 font-light text-xs md:text-sm leading-relaxed mb-4">
-                {data.desc}
-              </p>
-              {typeof data.link === "string" && (
-                <a 
-                  href={data.link}
+            <div className="rounded-2xl border border-signal/30 bg-surface/85 backdrop-blur-xl p-6 shadow-2xl shadow-black/60">
+              <div className="eyebrow text-signal/80 mb-3">In the web</div>
+              <h3 className="font-display text-2xl text-text mb-3">{selectedNode.label}</h3>
+              <p className="text-sm text-muted font-light leading-relaxed mb-5">{selectedNode.desc}</p>
+              {selectedNode.link && (
+                <a
+                  href={selectedNode.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block w-full text-center px-4 py-2 rounded-xl bg-accent/20 hover:bg-accent/30 text-accent font-medium text-xs md:text-sm transition-all mb-3 focus:outline-none focus:ring-1 focus:ring-accent/40"
+                  data-cursor="visit"
+                  className="flex items-center justify-center gap-2 rounded-xl border border-signal/40 hover:border-signal text-signal text-xs font-mono uppercase tracking-widest py-3 mb-3 transition-colors"
                 >
-                  {data.linkText || "Launch Project"}
+                  {selectedNode.linkText || "Visit"} <span>↗</span>
                 </a>
               )}
-              <button 
-                onClick={handleClose}
-                className="text-[10px] md:text-xs text-white/50 hover:text-white uppercase tracking-widest transition-colors w-full text-left focus:outline-none"
+              <button
+                onClick={() => setSelected(null)}
+                className="font-mono text-[10px] text-muted hover:text-text uppercase tracking-widest transition-colors"
               >
-                Close Connection
+                close
               </button>
-            </GlassCard>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-};
-
-const nodeTypes = { glass: GlassNode };
-
-const initialNodes: Node[] = [
-  { id: "center", type: "glass", position: { x: 400, y: 300 }, data: { label: "Meteor", icon: "🦇" } },
-  { id: "n1", type: "glass", position: { x: 200, y: 150 }, data: { label: "JEE 2027 & The Forge", desc: "Deep academic preparation. Mastering Physics, Chemistry, and Mathematics for the JEE 2027. Building a razor-sharp analytical foundation under quiet discipline." } },
-  { id: "n2", type: "glass", position: { x: 600, y: 150 }, data: { label: "Generative AI & Agents", desc: "Researching and building autonomous agentic systems. Combining custom LLM pipelines, prompt design, and real-time execution layers." } },
-  { id: "n3", type: "glass", position: { x: 100, y: 300 }, data: { label: "Vibe Link", desc: "My first full AI chatbot built completely from scratch. Dark cyber theme, glassmorphic UI, looping background video, thunder effects, and Groq API. Ship fast, refine continuously.", link: "https://vibe-link-delta.vercel.app", linkText: "Launch Vibe Link" } },
-  { id: "n4", type: "glass", position: { x: 700, y: 300 }, data: { label: "Future Builds", desc: "Next-generation software applications and automated systems. Moving ideas from conceptual architectures to production-ready builds." } },
-  { id: "n5", type: "glass", position: { x: 200, y: 450 }, data: { label: "The Vessel", desc: "Building a strong physical frame. Height 6'2\" with strict discipline around fitness, weight training, and OMAD (One Meal A Day) protocol." } },
-  { id: "n6", type: "glass", position: { x: 400, y: 500 }, data: { label: "The Codex", desc: "The unbreakable rules: Build strong fundamentals, ship anyway, and manage the dual mission (JEE + building) without compromise." } },
-  { id: "n7", type: "glass", position: { x: 600, y: 450 }, data: { label: "The Frequency", desc: "Late-night music, coding during stormy nights, cars, and deep conversations about systems. Reaching out to fellow builders who operate on the same wavelength." } },
-];
-
-const initialEdges: Edge[] = [
-  { id: "e1", source: "center", target: "n1", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e2", source: "center", target: "n2", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e3", source: "center", target: "n3", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e4", source: "center", target: "n4", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e5", source: "center", target: "n5", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e6", source: "center", target: "n6", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-  { id: "e7", source: "center", target: "n7", animated: true, style: { stroke: "#facc15", strokeWidth: 2, opacity: 0.6 } },
-];
-
-export default function WebPage() {
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-
-  const onConnect = useCallback(
-    (params: Connection) => setEdges((eds) => addEdge({ ...params, animated: true, style: { stroke: "#facc15", strokeWidth: 2 } }, eds)),
-    [setEdges],
-  );
-
-  const onNodeClick = (_event: React.MouseEvent, node: Node) => {
-    if (node.id === "center") return;
-    setNodes((nds) => 
-      nds.map((n) => {
-        if (n.id === node.id) {
-          return {
-            ...n,
-            data: {
-              ...n.data,
-              isExpanded: !n.data.isExpanded
-            }
-          };
-        }
-        return n;
-      })
-    );
-  };
-
-  const hasExpandedNodes = nodes.some(n => n.data.isExpanded);
-
-  return (
-    <div className="relative w-full h-[100svh] flex flex-col pt-24 overflow-hidden pointer-events-none transition-all duration-500">
-      
-      {/* Floating Header */}
-      <motion.div 
-        className="absolute top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-none text-center"
-        animate={{ y: [0, -5, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <h1 className="text-3xl font-bold text-white tracking-tight drop-shadow-xl">
-          The <span className="text-accent drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">Meteor Web</span>
-        </h1>
-      </motion.div>
-
-      {/* Main Transparent Canvas */}
-      <div className="flex-1 w-full h-full relative z-10 pointer-events-auto">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
-          onNodeClick={onNodeClick}
-          nodeTypes={nodeTypes}
-          fitView
-          className={`dark-theme-flow ${hasExpandedNodes ? "has-expanded-nodes" : ""}`}
-          style={{ background: "transparent" }}
-        >
-          <Controls className="!bg-[#0a0a0f]/40 !backdrop-blur-xl !border-white/10 !fill-white shadow-2xl" />
-        </ReactFlow>
-      </div>
     </div>
   );
 }

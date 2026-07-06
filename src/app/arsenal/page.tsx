@@ -1,143 +1,150 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { DriftItem } from "@/components/floating/DriftItem";
-import { GlassCard } from "@/components/floating/GlassCard";
+import React from "react";
+import { Reveal, SplitText } from "@/components/Reveal";
+import { Magnetic } from "@/components/Magnetic";
+import { Footer } from "@/components/Footer";
 
-const SKILLS = [
-  { id: "s1", x: 20, y: 30, label: "Frontend" },
-  { id: "s2", x: 80, y: 20, label: "Systems" },
-  { id: "s3", x: 50, y: 70, label: "AI Agents" },
-  { id: "s4", x: 15, y: 80, label: "Design" },
-  { id: "s5", x: 85, y: 80, label: "Backend" },
+type Project = {
+  n: string;
+  title: string;
+  status: string;
+  tags: string[];
+  body: string;
+  href?: string;
+  cta?: string;
+};
+
+const PROJECTS: Project[] = [
+  {
+    n: "01",
+    title: "AetherMem",
+    status: "Prototype",
+    tags: ["LLMs", "Memory fabric", "Self-evolving", "Systems"],
+    body:
+      "A self-evolving memory fabric for advanced language models. A second model sits above it as an arbiter, judging how memory and context get written, retrieved, and pruned, then steering those decisions in real time. That feedback loop is what lets the system reshape its own memory as it runs, instead of forgetting the way most models do. The kind of thing I build when no one asked me to.",
+  },
+  {
+    n: "02",
+    title: "Notrik",
+    status: "Live",
+    tags: ["Web", "Flow state", "Sprint"],
+    body:
+      "A website carved out in one deep sprint across several days. Long uninterrupted hours, zero burnout.. proof of what the engine does when it locks onto something worth building.",
+    href: "https://notrik-ten.vercel.app/",
+    cta: "Visit Notrik",
+  },
+  {
+    n: "03",
+    title: "MintedMile",
+    status: "Archived · peaked 10k+",
+    tags: ["Instagram", "Curation", "Growth", "Brand"],
+    body:
+      "A theme page I grew past ten thousand followers on pure taste and consistency. It still sits near nine thousand. I stepped away from it.. but it taught me how attention actually moves.",
+    href: "https://www.instagram.com/mintedmile/",
+    cta: "View the page",
+  },
+  {
+    n: "04",
+    title: "Vibe Link",
+    status: "Live",
+    tags: ["Next.js", "TypeScript", "Tailwind", "Groq API"],
+    body:
+      "My first full AI chatbot, built from zero with no prior coding experience. A dark cyber interface with looping video, glassmorphism, thunder effects, real-time chat and history, fully responsive. Idea to live product in under ten days.",
+    href: "https://vibe-link-delta.vercel.app",
+    cta: "Launch Vibe Link",
+  },
+  {
+    n: "05",
+    title: "MEGADRESS",
+    status: "Solo build",
+    tags: ["Brand identity", "Creatives", "Website", "Marketing"],
+    body:
+      "A clothing brand I built alone. From the vision down to the identity, the creatives, the site and the marketing. My first real lesson in taking something from head to execution.",
+  },
 ];
 
 export default function ArsenalPage() {
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
-
   return (
-    <div className="relative min-h-[100svh] w-full pt-32 pb-32 px-6 lg:px-24 flex flex-col items-center overflow-hidden">
-      
-      <motion.h1 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-4xl lg:text-6xl font-bold tracking-tight text-white mb-20 text-center"
-      >
-        The <span className="text-accent">Arsenal</span>
-      </motion.h1>
-
-      <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-10">
-        
-        {/* Left Column: Digital Arsenal */}
-        <div className="flex flex-col gap-12">
-          <DriftItem yDrift={[0, -10, 0]} rotateDrift={[0, 1, 0]}>
-            <GlassCard glow>
-              <h2 className="text-2xl font-bold text-accent mb-2">Vibe Link</h2>
-              <div className="w-full h-[1px] bg-white/10 mb-6" />
-              <p className="text-white/80 font-light mb-6 whitespace-pre-wrap leading-relaxed">
-                My first full AI chatbot. Built it completely from scratch using Next.js 16, TypeScript, Tailwind and Groq API..\n\nDark cyber Batman theme with looping video background, glassmorphic design, electric thunder effects, real-time chat, chat history and full mobile support. Deployed on Vercel.\n\nWent live in under 10 days. Still improving it.
-              </p>
-              <a 
-                href="https://vibe-link-delta.vercel.app" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-block px-6 py-2 rounded-lg bg-accent/20 text-accent font-medium hover:bg-accent/30 transition-colors"
-              >
-                Launch Vibe Link
-              </a>
-            </GlassCard>
-          </DriftItem>
-
-          <DriftItem delay={1} duration={8} yDrift={[0, 8, 0]}>
-            <GlassCard>
-              <h2 className="text-xl font-bold text-white mb-2">MEGADRESS</h2>
-              <p className="text-white/70 font-light text-sm whitespace-pre-wrap leading-relaxed">
-                Independently built a small clothing brand from vision to execution.. Created full brand identity, website header, sales creatives, marketing materials and basic website. Learned how products, branding and real execution actually work in practice.
-              </p>
-            </GlassCard>
-          </DriftItem>
-
-          <DriftItem delay={0.5} duration={9} yDrift={[0, -5, 0]}>
-            <GlassCard>
-              <h2 className="text-xl font-bold text-white mb-2">Other Experiments</h2>
-              <p className="text-white/70 font-light text-sm whitespace-pre-wrap leading-relaxed">
-                Multiple website design and digital marketing experiments. Learned how structure, visuals and messaging actually affect people.
-              </p>
-            </GlassCard>
-          </DriftItem>
+    <div className="w-full flex flex-col">
+      <section className="px-6 lg:px-12 pt-40 md:pt-52 pb-16">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="mb-6">
+            <div className="eyebrow flex items-center gap-3">
+              <span className="inline-block w-8 h-px bg-signal" /> 02 · THE ARSENAL
+            </div>
+          </Reveal>
+          <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.9] text-text">
+            <SplitText text="Built" />
+          </h1>
+          <Reveal delay={0.4} className="mt-8 max-w-md">
+            <p className="text-lg text-muted font-light">
+              Things I&apos;ve made after midnight. Some shipped, some shelved.. all mine.
+            </p>
+          </Reveal>
         </div>
+      </section>
 
-        {/* Right Column: Physical & Mental */}
-        <div className="flex flex-col gap-8 lg:mt-24">
-          <DriftItem delay={0.5} yDrift={[0, 12, 0]} rotateDrift={[-1, 0, -1]}>
-            <GlassCard>
-              <h2 className="text-xl font-bold text-white mb-2">The Vessel</h2>
-              <ul className="text-white/70 font-light space-y-3 text-sm leading-relaxed">
-                <li>• Height 6&apos;2&quot;.. currently building a strong frame through consistent training and OMAD protocol.</li>
-                <li>• High discipline around food, sleep and daily systems.</li>
-              </ul>
-            </GlassCard>
-          </DriftItem>
+      <section className="px-6 lg:px-12">
+        <div className="max-w-6xl mx-auto">
+          {PROJECTS.map((p) => (
+            <div
+              key={p.n}
+              className="group grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-12 border-t border-line py-14 md:py-20"
+            >
+              <div className="md:col-span-1">
+                <span className="font-mono text-xs text-signal/70">{p.n}</span>
+              </div>
 
-          <DriftItem delay={1.5} duration={7} yDrift={[0, -8, 0]}>
-            <GlassCard>
-              <h2 className="text-xl font-bold text-white mb-2">Systems & Discipline</h2>
-              <p className="text-white/70 font-light text-sm whitespace-pre-wrap leading-relaxed">
-                I don’t rely on motivation. I rely on systems that keep me sharp even on bad days..\n\nProblem solving through JEE, building through real projects, and long-term thinking. These are my real weapons.
-              </p>
-            </GlassCard>
-          </DriftItem>
+              <div className="md:col-span-5">
+                <Reveal>
+                  <h2 className="font-display text-5xl md:text-6xl text-muted group-hover:text-text transition-colors duration-500">
+                    {p.title}
+                  </h2>
+                  <div className="mt-4 eyebrow text-signal/80">{p.status}</div>
+                </Reveal>
+              </div>
+
+              <div className="md:col-span-6 flex flex-col gap-6">
+                <Reveal delay={0.1}>
+                  <p className="text-lg md:text-xl text-muted font-light leading-relaxed">{p.body}</p>
+                </Reveal>
+                <Reveal delay={0.15}>
+                  <div className="flex flex-wrap gap-2">
+                    {p.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="font-mono text-[10px] uppercase tracking-widest text-muted border border-line rounded-full px-3 py-1.5"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </Reveal>
+                {p.href && (
+                  <Reveal delay={0.2}>
+                    <Magnetic>
+                      <a
+                        href={p.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        data-cursor="visit"
+                        className="inline-flex items-center gap-3 border border-line hover:border-signal/50 rounded-full px-6 py-3 text-sm text-text hover:text-signal transition-colors duration-500"
+                      >
+                        {p.cta}
+                        <span className="text-signal">↗</span>
+                      </a>
+                    </Magnetic>
+                  </Reveal>
+                )}
+              </div>
+            </div>
+          ))}
+          <div className="border-t border-line" />
         </div>
+      </section>
 
-      </div>
-
-      {/* Skill Constellation (Background Layer) */}
-      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-40 mix-blend-screen">
-        <svg className="w-full h-full">
-          {SKILLS.map((skill, i) => {
-            return SKILLS.slice(i + 1).map((target) => (
-              <motion.line
-                key={`${skill.id}-${target.id}`}
-                x1={`${skill.x}%`}
-                y1={`${skill.y}%`}
-                x2={`${target.x}%`}
-                y2={`${target.y}%`}
-                stroke="url(#accent-gradient)"
-                strokeWidth={1}
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={{ 
-                  pathLength: 1, 
-                  opacity: hoveredSkill === skill.id || hoveredSkill === target.id ? 0.8 : 0.1 
-                }}
-                transition={{ duration: 2, ease: "easeInOut" }}
-              />
-            ));
-          })}
-          <defs>
-            <linearGradient id="accent-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#facc15" />
-              <stop offset="100%" stopColor="#0a0a0f" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {SKILLS.map((skill) => (
-          <motion.div
-            key={skill.id}
-            className="absolute w-4 h-4 bg-accent rounded-full -translate-x-1/2 -translate-y-1/2 pointer-events-auto cursor-pointer shadow-[0_0_15px_rgba(250,204,21,0.8)]"
-            style={{ left: `${skill.x}%`, top: `${skill.y}%` }}
-            onHoverStart={() => setHoveredSkill(skill.id)}
-            onHoverEnd={() => setHoveredSkill(null)}
-            animate={{ scale: hoveredSkill === skill.id ? 1.5 : 1 }}
-          >
-            <span className="absolute top-6 left-1/2 -translate-x-1/2 text-white/50 text-xs font-mono tracking-widest uppercase">
-              {skill.label}
-            </span>
-          </motion.div>
-        ))}
-      </div>
-
+      <Footer />
     </div>
   );
 }
