@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useState } from "react";
-import { motion, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import { ShootingStars } from "@/components/ShootingStars";
 
 type NodeT = {
@@ -27,8 +27,10 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function ConstellationPage() {
   const [selected, setSelected] = useState<string | null>(null);
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const selectedNode = NODES.find((n) => n.id === selected) || null;
   const containerRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   // mouse parallax
   const cx = useSpring(useMotionValue(0), { stiffness: 60, damping: 18 });
@@ -100,7 +102,7 @@ export default function ConstellationPage() {
                     initial={{ strokeDashoffset: 0 }}
                     animate={{
                       strokeDashoffset: [0, -28],
-                      opacity: selected === n.id ? 0.9 : dimmed ? 0.05 : 0.4,
+                      opacity: selected === n.id ? 0.9 : hoveredNode === n.id ? 0.75 : dimmed ? 0.05 : 0.4,
                     }}
                     transition={{
                       strokeDashoffset: { duration: 2.2 + i * 0.25, repeat: Infinity, ease: "linear" },
@@ -141,6 +143,8 @@ export default function ConstellationPage() {
                   e.stopPropagation();
                   setSelected(isSel ? null : n.id);
                 }}
+                onMouseEnter={() => setHoveredNode(n.id)}
+                onMouseLeave={() => setHoveredNode(null)}
                 data-cursor="open"
                 className="absolute -translate-x-1/2 -translate-y-1/2 z-20 group flex flex-col items-center gap-2 focus:outline-none"
                 style={{ left: `${n.x}%`, top: `${n.y}%` }}
@@ -149,6 +153,15 @@ export default function ConstellationPage() {
                 transition={{ duration: 0.7, ease: EASE, delay: 0.35 + i * 0.08 }}
               >
                 <span className="relative flex items-center justify-center h-10 w-10">
+                  {/* breathing halo: each node inhales on its own slow clock */}
+                  {!reducedMotion && (
+                    <motion.span
+                      className="absolute rounded-full border border-signal/30"
+                      style={{ width: 28, height: 28 }}
+                      animate={{ scale: [1, 1.45, 1], opacity: [0.3, 0, 0.3] }}
+                      transition={{ duration: 4.6 + i * 0.6, repeat: Infinity, ease: "easeInOut", delay: i * 0.7 }}
+                    />
+                  )}
                   <span
                     className={`absolute rounded-full border transition-all duration-500 ${
                       isSel ? "w-10 h-10 border-signal" : "w-7 h-7 border-line group-hover:border-signal/60"

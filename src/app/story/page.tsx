@@ -140,7 +140,8 @@ export default function StoryPage() {
                         {/* Overlaid Data metric */}
                         <div className="absolute bottom-6 left-6 mix-blend-difference pointer-events-none">
                           <div className="font-mono text-[9px] text-text/80 tracking-[0.3em] uppercase">
-                            SEQ_{ch.n} / LAT.{(Math.random() * 90).toFixed(4)}
+                            {/* deterministic pseudo-coordinate: Math.random() here breaks SSR hydration */}
+                            SEQ_{ch.n} / LAT.{((i * 23.517 + 18.5204) % 90).toFixed(4)}
                           </div>
                         </div>
                       </div>

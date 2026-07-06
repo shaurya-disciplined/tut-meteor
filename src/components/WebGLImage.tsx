@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef, useMemo, useState } from "react";
-import { View, useTexture } from "@react-three/drei";
-import { useFrame, useThree } from "@react-three/fiber";
+import React, { useRef, useMemo, useState, useEffect, Suspense } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 const ImageShader = {
@@ -31,28 +31,28 @@ const ImageShader = {
       vec2 newSize = rs < ri ? vec2(i.x * s.y / i.y, s.y) : vec2(s.x, i.y * s.x / i.x);
       vec2 offset = (rs < ri ? vec2((newSize.x - s.x) / 2.0, 0.0) : vec2(0.0, (newSize.y - s.y) / 2.0)) / newSize;
       vec2 uv = vUv * s / newSize + offset;
-      
+
       // Calculate liquid wave ripple based on time and hover state
       float wave = sin(uv.y * 12.0 + uTime * 3.5) * 0.012;
       float wave2 = cos(uv.x * 12.0 + uTime * 3.0) * 0.012;
-      
+
       // Distort UVs using mouse distance and hover factor
       vec2 dist = uv - uMouse;
       float mouseLen = length(dist);
       float mouseForce = exp(-mouseLen * 4.0) * uHover;
-      
+
       vec2 distortedUv = uv + vec2(wave, wave2) * uHover + dist * mouseForce * 0.14;
-      
+
       // Chromatic Aberration RGB split effect
       float r = texture2D(uTexture, distortedUv + vec2(0.007, 0.0) * uHover).r;
       float g = texture2D(uTexture, distortedUv).g;
       float b = texture2D(uTexture, distortedUv - vec2(0.007, 0.0) * uHover).b;
-      
+
       vec3 finalColor = vec3(r, g, b);
-      
+
       // Slight contrast boost when hovered
       finalColor = mix(finalColor, finalColor * 1.08, uHover);
-      
+
       gl_FragColor = vec4(finalColor, 1.0);
     }
   `,
@@ -62,7 +62,7 @@ function ImageMesh({ src, hover, mouse }: { src: string; hover: number; mouse: [
   const texture = useTexture(src);
   const meshRef = useRef<THREE.Mesh>(null);
   const { size } = useThree();
-  
+
   // Set texture filtering for optimal quality
   texture.minFilter = THREE.LinearFilter;
   texture.generateMipmaps = false;
@@ -74,11 +74,11 @@ function ImageMesh({ src, hover, mouse }: { src: string; hover: number; mouse: [
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uResolution: { value: new THREE.Vector2(size.width, size.height) },
-      uImageResolution: { 
+      uImageResolution: {
         value: new THREE.Vector2(
-          (texture.image as HTMLImageElement)?.width || 1, 
+          (texture.image as HTMLImageElement)?.width || 1,
           (texture.image as HTMLImageElement)?.height || 1
-        ) 
+        ),
       },
     }),
     [texture, size]
@@ -107,6 +107,15 @@ function ImageMesh({ src, hover, mouse }: { src: string; hover: number; mouse: [
   );
 }
 
+/**
+ * Liquid-hover image. Self-contained: each instance owns a small transparent
+ * Canvas inside its card, so overlaid labels (which live in the same stacking
+ * context) always render above it, and any CSS filter classes (grayscale,
+ * opacity, transitions) apply to the canvas element natively.
+ *
+ * Touch devices get a plain <img> instead: there is no hover there, so the
+ * shader adds GPU cost without adding anything visible.
+ */
 export function WebGLImage({
   src,
   alt,
@@ -118,34 +127,57 @@ export function WebGLImage({
   className?: string;
   containerClassName?: string;
 }) {
-  const viewRef = useRef<HTMLDivElement>(null);
+  const boxRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(0);
   const [mousePos, setMousePos] = useState<[number, number]>([0.5, 0.5]);
+  const [interactive, setInteractive] = useState(false);
+
+  useEffect(() => {
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setInteractive(fine && !reduced);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!viewRef.current) return;
-    const rect = viewRef.current.getBoundingClientRect();
+    if (!boxRef.current) return;
+    const rect = boxRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
-    const y = 1.0 - (e.clientY - rect.top) / rect.height; // WebGL UV coordinate starts bottom-left
+    const y = 1.0 - (e.clientY - rect.top) / rect.height; // WebGL UV starts bottom-left
     setMousePos([x, y]);
   };
 
+  if (!interactive) {
+    return (
+      <div className={`relative overflow-hidden ${containerClassName}`}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={alt} className={`absolute inset-0 w-full h-full object-cover ${className}`} loading="lazy" />
+      </div>
+    );
+  }
+
   return (
     <div
-      ref={viewRef}
+      ref={boxRef}
       onMouseEnter={() => setHover(1)}
       onMouseLeave={() => {
         setHover(0);
         setMousePos([0.5, 0.5]);
       }}
       onMouseMove={handleMouseMove}
-      className={`relative overflow-hidden cursor-pointer ${containerClassName}`}
+      className={`relative overflow-hidden ${containerClassName}`}
       aria-label={alt}
+      role="img"
     >
-      {/* Three.js View portal rendering exactly where this div is */}
-      <View className={`w-full h-full absolute inset-0 ${className}`}>
-        <ImageMesh src={src} hover={hover} mouse={mousePos} />
-      </View>
+      <Canvas
+        className={`!absolute !inset-0 ${className}`}
+        gl={{ antialias: false, alpha: true, powerPreference: "default" }}
+        dpr={[1, 1.5]}
+        camera={{ position: [0, 0, 1] }}
+      >
+        <Suspense fallback={null}>
+          <ImageMesh src={src} hover={hover} mouse={mousePos} />
+        </Suspense>
+      </Canvas>
     </div>
   );
 }

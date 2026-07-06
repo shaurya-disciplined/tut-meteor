@@ -2,8 +2,6 @@
 
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
-import { Canvas } from "@react-three/fiber";
-import { View } from "@react-three/drei";
 
 const vertexShader = `
   varying vec2 vUv;
@@ -85,12 +83,14 @@ const fragmentShader = `
                                   dot(p2,x2), dot(p3,x3) ) );
   }
 
-  // FBM (Fractional Brownian Motion)
+  // FBM (Fractional Brownian Motion). OCTAVES is injected at context creation:
+  // 5 on desktop, 3 on phones (the shader runs ~7 fbm calls per pixel, so octave
+  // count is the single biggest lever on mobile GPU load and battery).
   float fbm(vec3 x) {
     float v = 0.0;
     float a = 0.5;
     vec3 shift = vec3(100.0);
-    for (int i = 0; i < 5; ++i) {
+    for (int i = 0; i < OCTAVES; ++i) {
       v += a * snoise(x);
       x = x * 2.0 + shift;
       a *= 0.5;
@@ -174,6 +174,10 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
   useEffect(() => {
     if (!bgCanvasRef.current) return;
 
+    // Mobile gets a lighter shader (3 fbm octaves vs 5) and a lower pixel ratio.
+    // Phones are the primary audience, so the smoke must stay smooth there.
+    const isMobile = window.matchMedia("(pointer: coarse)").matches || window.innerWidth < 768;
+
     // 1. Setup RAW Three.js Scene for the indestructible background.
     // By using raw WebGL outside of the React render cycle, we completely
     // bypass any freezes caused by Next.js route transitions or Suspense boundaries.
@@ -183,8 +187,8 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
       alpha: false,
       powerPreference: "high-performance",
     });
-    
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 1.5));
     
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
@@ -200,7 +204,7 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
 
     const material = new THREE.ShaderMaterial({
       vertexShader,
-      fragmentShader,
+      fragmentShader: `#define OCTAVES ${isMobile ? 3 : 5}\n` + fragmentShader,
       uniforms,
       depthWrite: false,
       depthTest: false,
@@ -285,17 +289,6 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
         ref={bgCanvasRef}
         className="fixed inset-0 -z-20 w-full h-full pointer-events-none"
       />
-
-      {/* R3F View Portal Canvas (Transparent foreground for interactive WebGL Image glimmers on specific pages) */}
-      <div className="fixed inset-0 z-30 w-full h-full pointer-events-none overflow-hidden">
-        <Canvas
-          eventSource={containerRef as unknown as React.MutableRefObject<HTMLElement>}
-          gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-          dpr={[1, 1.5]}
-        >
-          <View.Port />
-        </Canvas>
-      </div>
 
       {/* Main HTML Content */}
       <div className="relative z-10 w-full flex flex-col flex-grow">

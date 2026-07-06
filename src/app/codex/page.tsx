@@ -58,6 +58,12 @@ export default function CodexPage() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="font-display text-fluid-display md:text-[6.5rem] leading-[0.95]"
+                style={{
+                  // carved-in-stone emboss: a hard dark undercut above, a faint
+                  // catch of light on the lower edge, and a soft settled shadow
+                  textShadow:
+                    "0 -1px 0 rgba(0,0,0,0.9), 0 1px 0 rgba(234,234,236,0.07), 0 4px 12px rgba(0,0,0,0.55)",
+                }}
               >
                 <span className="text-text">{c.line} </span>
                 <span className="text-muted italic">{c.tail}</span>

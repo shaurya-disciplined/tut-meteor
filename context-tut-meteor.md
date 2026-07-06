@@ -272,3 +272,26 @@ Done (both self-contained, avoid the fragile nav/transition code):
 Deferred (both touch `PageTransition`/`Preloader`, which are entangled with the §15 nav bug.. better to fix
 that first): **gear-shift transitions** (light streaks across the curtain wipe) and **ignition load** (cold-start
 preloader).
+
+## 17. Owner's rebuild + Phase 3 complete + Phase 4 (2026-07-07)
+
+**The §15 freeze bug is DEAD, killed by the owner's rewrite:** `WebGLCanvas.tsx` now runs the smoke on a
+**raw Three.js renderer + own rAF loop entirely outside R3F/React** (plain `<canvas>`, effect-mounted once).
+No React lifecycle = nothing for route transitions to kill. This is the canonical pattern for this site: the
+persistent background must stay raw; never wrap it back into R3F. Owner also finished Phase 3 (commit
+`795788d`): ignition-load preloader (tachometer needle + flicker), gear-shift page wipe (lamp streaks), and a
+mechanical odometer TripMeter (bottom-right, miles). Owner also placed liquid `WebGLImage`s on `/story`.
+
+**Mobile pass (phones are the primary audience):** smoke shader octaves are injected at context creation
+(`#define OCTAVES` — 5 desktop, 3 on coarse-pointer/<768px) and pixel ratio capped at 1 on mobile. Removed the
+global always-on `View.Port` foreground canvas; `WebGLImage` is now **self-contained** (own small transparent
+`<Canvas>` per instance, desktop fine-pointer only, plain `<img>` on touch/reduced-motion). That also fixes the
+z-order for good: labels/gradients in the same card stacking context render above the image, and CSS filter
+classes (grayscale hover on /story) now genuinely apply to the canvas element. Fixed a hydration bug on
+`/story` (`Math.random()` in render → deterministic per-chapter pseudo-coordinate).
+
+**Phase 4 (done):** breathing constellation on `/web` (staggered slow halo pulse per node, reduced-motion
+aware; a node's line brightens to 0.75 on hover) and carved-stone emboss on the `/codex` creed lines
+(engraved textShadow). Liquid images = `/story` (owner). **Glass refraction lens intentionally skipped**:
+needs a second full-scene render pass (mobile cost) and violates the one-signature-per-page guardrail.
+Next: Phase 5 (restraint pass + ship).
