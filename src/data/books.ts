@@ -320,7 +320,7 @@ export const BOOKS: Book[] = [
   // Tech & AI
   {
     slug: "co-intelligence",
-    title: "Co-Intelligence",
+    title: "Co Intelligence",
     author: "Ethan Mollick",
     category: "Tech & AI",
     note: "one sitting",

@@ -42,7 +42,7 @@ export default function MidnightPage() {
           </p>
           <Reveal delay={0.2} className="mt-10 max-w-xl">
             <p className="text-fluid-subtitle text-muted font-light leading-relaxed">
-              Vehicles of pure kinetic intent. Masterpieces engineered for singular performance—where raw speed serves as absolute structural honesty. These designs map the trajectory; they delineate where we are headed.
+              Vehicles of pure kinetic intent. Masterpieces engineered for singular performance.. where raw speed serves as absolute structural honesty. These designs map the trajectory; they delineate where we are headed.
             </p>
           </Reveal>
         </div>

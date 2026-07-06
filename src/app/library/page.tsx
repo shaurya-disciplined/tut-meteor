@@ -28,7 +28,7 @@ export default function LibraryPage() {
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-lg">
             <p className="text-fluid-subtitle text-muted font-light">
-              A curated index of intellectual frameworks. Selected not for leisure, but for structural utility. {TOTAL} systems of thought—compiled, indexed, and referenced.
+              A curated index of intellectual frameworks. Selected not for leisure, but for structural utility. {TOTAL} systems of thought.. compiled, indexed, and referenced.
             </p>
           </Reveal>
           <Reveal delay={0.55} className="mt-4">
@@ -167,7 +167,7 @@ export default function LibraryPage() {
           <div className="flex flex-col gap-6 text-fluid-subtitle font-light leading-relaxed text-muted">
             <Reveal delay={0.05}>
               <p>
-                An architecture of intent, not a trophy case. Some volumes have been thoroughly dissected, others remain sealed—anchors waiting for a future vector.
+                An architecture of intent, not a trophy case. Some volumes have been thoroughly dissected, others remain sealed.. anchors waiting for a future vector.
               </p>
             </Reveal>
             <Reveal delay={0.12}>

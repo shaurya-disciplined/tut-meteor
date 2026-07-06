@@ -22,7 +22,7 @@ const CHAPTERS: {
     years: "Jnana Prabodhini Prashala",
     lines: [
       "Six years structured by a silent discipline.",
-      "It taught me to operate in the gray area—independent of consensus and detached from external validation.",
+      "It taught me to operate in the gray area.. independent of consensus and detached from external validation.",
       "A framework forged in silence, designed to hold under extreme stress.",
     ],
     ghost: { src: "/images/samurai-temple.jpg", side: "right" },

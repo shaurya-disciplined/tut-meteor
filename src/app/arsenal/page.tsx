@@ -20,9 +20,9 @@ const PROJECTS: Project[] = [
     n: "01",
     title: "AetherMem",
     status: "Prototype",
-    tags: ["LLMs", "Memory fabric", "Self-evolving", "Systems"],
+    tags: ["LLMs", "Memory fabric", "Self evolving", "Systems"],
     body:
-      "A dynamic, self-evolving memory fabric for large language models. Utilizes an orchestration engine that acts as a cognitive arbiter—evaluating, index-pruning, and restructuring recall vectors in real-time. This feedback loop resolves context decay and prevents catastrophic forgetting. Engineered purely out of curiosity.",
+      "A dynamic, self evolving memory fabric for large language models. Utilizes an orchestration engine that acts as a cognitive arbiter.. evaluating, index pruning, and restructuring recall vectors in real time. This feedback loop resolves context decay and prevents catastrophic forgetting. Engineered purely out of curiosity.",
   },
   {
     n: "02",
@@ -30,7 +30,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Web", "Flow state", "Sprint"],
     body:
-      "A high-performance digital environment structured during a continuous multi-day sprint. An exercise in hyper-focus and rapid system compilation, verifying the throughput of the development engine under pressure.",
+      "A high performance digital environment structured during a continuous multi day sprint. An exercise in hyper focus and rapid system compilation, verifying the throughput of the development engine under pressure.",
     href: "https://notrik-ten.vercel.app/",
     cta: "Visit Notrik",
   },
@@ -50,7 +50,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Next.js", "TypeScript", "Tailwind", "Groq API"],
     body:
-      "An immersive conversational client powered by Groq. Built from zero to deployment within a ten-day sprint. Styled with reactive glassmorphism, weather-driven particle dynamics, and absolute real-time stream processing.",
+      "An immersive conversational client powered by Groq. Built from zero to deployment within a ten day sprint. Styled with reactive glassmorphism, weather driven particle dynamics, and absolute real time stream processing.",
     href: "https://vibe-link-delta.vercel.app",
     cta: "Launch Vibe Link",
   },
@@ -60,7 +60,7 @@ const PROJECTS: Project[] = [
     status: "Solo build",
     tags: ["Brand identity", "Creatives", "Website", "Marketing"],
     body:
-      "A streetwear label built single-handedly. Owned the entire pipeline: from initial brand positioning and collection identity to e-commerce deployment and algorithmic target marketing.",
+      "A streetwear label built single handedly. Owned the entire pipeline: from initial brand positioning and collection identity to digital commerce deployment and algorithmic target marketing.",
   },
 ];
  
@@ -79,7 +79,7 @@ export default function ArsenalPage() {
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-md">
             <p className="text-fluid-subtitle text-muted font-light">
-              Digital assets forged in the quiet hours. Some shipped, some shelved—all built.
+              Digital assets forged in the quiet hours. Some shipped, some shelved.. all built.
             </p>
           </Reveal>
         </div>
