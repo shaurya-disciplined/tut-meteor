@@ -18,50 +18,50 @@ const CHAPTERS: {
 }[] = [
   {
     n: "01",
-    title: "Early Shadows",
-    years: "2019 → 2025",
+    title: "The Iron Base",
+    years: "Jnana Prabodhini Prashala",
     lines: [
-      "Six years at Jnana Prabodhini Prashala.",
-      "It taught me to think for myself and move without waiting to be led.",
-      "The base was set there.. the kind of discipline that holds when no one is watching.",
+      "Six years structured by a silent discipline.",
+      "It taught me to operate in the gray area—independent of consensus and detached from external validation.",
+      "A framework forged in silence, designed to hold under extreme stress.",
     ],
     ghost: { src: "/images/samurai-temple.jpg", side: "right" },
   },
   {
     n: "02",
-    title: "The Forge",
-    years: "The long hours",
+    title: "The Pressure Chamber",
+    years: "The Quiet Grinds",
     lines: [
-      "Then the pressure arrived. A mission worth years, and a backlog to match.",
-      "So I stopped relying on motivation and started building systems.",
-      "Not just to study.. to stay sharp, and to come back when a day breaks.",
+      "Systematic rigor replaced arbitrary motivation.",
+      "When the stakes multiplied, I stopped waiting for inspiration and built systemic routines.",
+      "Late nights in Pune, learning to stay sharp while the city slept.",
     ],
     ghost: { src: "/images/nishan-rider.jpg", side: "left" },
   },
   {
     n: "03",
-    title: "The Awakening",
-    years: "First ships",
+    title: "Proof of Concept",
+    years: "The Breakthroughs",
     lines: [
-      "Something shifted the day I started building.",
-      "A clothing brand from nothing. Then a full AI product with no prior code, live in under ten days.",
-      "That was the proof I needed: I can take an idea and make it real.",
+      "Translating raw intent into physical execution.",
+      "Created a fashion label from scratch. Followed it by shipping a fully integrated AI application in ten days, learning the stack on the fly.",
+      "The realization was clear: ideas are cheap, velocity of execution is everything.",
     ],
     ghost: { src: "/images/bosphorus-window.jpg", side: "right" },
   },
   {
     n: "04",
-    title: "The Signal Rises",
-    years: "Now",
+    title: "The Long Horizon",
+    years: "Continuous Operations",
     lines: [
-      "The mission still comes first. The building never stopped.. it just moved to the background.",
-      "I'm playing for the long game, not a single result.",
-      "The signal is only getting clearer.",
+      "The underlying system never stops building.",
+      "I don't play for momentary spikes. I build setups designed to scale across decades.",
+      "The focus is narrow, the resolution is high.",
     ],
     ghost: { src: "/images/city-torii-night.jpg", side: "left" },
   },
 ];
-
+ 
 export default function StoryPage() {
   return (
     <div className="w-full flex flex-col">
@@ -72,7 +72,7 @@ export default function StoryPage() {
               <span className="inline-block w-8 h-px bg-signal" /> 01 · THE STORY
             </div>
           </Reveal>
-          <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.9] text-text">
+          <h1 className="font-display text-fluid-display leading-[0.9] text-text">
             <SplitText text="Origin" />
           </h1>
         </div>

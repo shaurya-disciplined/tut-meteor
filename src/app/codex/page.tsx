@@ -24,8 +24,8 @@ export default function CodexPage() {
             </div>
           </Reveal>
           <Reveal delay={0.15} className="mt-8">
-            <p className="text-lg md:text-xl text-muted font-light max-w-md">
-              A few rules I keep. I won&apos;t explain them.
+            <p className="text-fluid-subtitle text-muted font-light max-w-md">
+              A set of constraints I operate within. They require no explanation.
             </p>
           </Reveal>
         </div>
@@ -57,7 +57,7 @@ export default function CodexPage() {
                 whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                className="font-display text-5xl md:text-8xl leading-[0.95]"
+                className="font-display text-fluid-display md:text-[6.5rem] leading-[0.95]"
               >
                 <span className="text-text">{c.line} </span>
                 <span className="text-muted italic">{c.tail}</span>
@@ -67,7 +67,7 @@ export default function CodexPage() {
           <div className="border-t border-line" />
         </div>
       </section>
-
+ 
       <section className="px-6 lg:px-12 py-32 md:py-48">
         <div className="max-w-3xl mx-auto text-center">
           <motion.p
@@ -75,7 +75,7 @@ export default function CodexPage() {
             whileInView={{ opacity: 1, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-            className="font-display italic text-2xl md:text-4xl text-muted"
+            className="font-display italic text-fluid-subtitle text-muted"
           >
             Everything here is true. None of it is the whole story.
           </motion.p>

@@ -22,7 +22,7 @@ const PROJECTS: Project[] = [
     status: "Prototype",
     tags: ["LLMs", "Memory fabric", "Self-evolving", "Systems"],
     body:
-      "A self-evolving memory fabric for advanced language models. A second model sits above it as an arbiter, judging how memory and context get written, retrieved, and pruned, then steering those decisions in real time. That feedback loop is what lets the system reshape its own memory as it runs, instead of forgetting the way most models do. The kind of thing I build when no one asked me to.",
+      "A dynamic, self-evolving memory fabric for large language models. Utilizes an orchestration engine that acts as a cognitive arbiter—evaluating, index-pruning, and restructuring recall vectors in real-time. This feedback loop resolves context decay and prevents catastrophic forgetting. Engineered purely out of curiosity.",
   },
   {
     n: "02",
@@ -30,7 +30,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Web", "Flow state", "Sprint"],
     body:
-      "A website carved out in one deep sprint across several days. Long uninterrupted hours, zero burnout.. proof of what the engine does when it locks onto something worth building.",
+      "A high-performance digital environment structured during a continuous multi-day sprint. An exercise in hyper-focus and rapid system compilation, verifying the throughput of the development engine under pressure.",
     href: "https://notrik-ten.vercel.app/",
     cta: "Visit Notrik",
   },
@@ -40,7 +40,7 @@ const PROJECTS: Project[] = [
     status: "Archived · peaked 10k+",
     tags: ["Instagram", "Curation", "Growth", "Brand"],
     body:
-      "A theme page I grew past ten thousand followers on pure taste and consistency. It still sits near nine thousand. I stepped away from it.. but it taught me how attention actually moves.",
+      "An experiment in algorithmic attention and curation. Built and scaled a digital audience past 10,000 users solely on targeted aesthetics and visual consistency. Designed to study how digital attention moves, pools, and converts.",
     href: "https://www.instagram.com/mintedmile/",
     cta: "View the page",
   },
@@ -50,7 +50,7 @@ const PROJECTS: Project[] = [
     status: "Live",
     tags: ["Next.js", "TypeScript", "Tailwind", "Groq API"],
     body:
-      "My first full AI chatbot, built from zero with no prior coding experience. A dark cyber interface with looping video, glassmorphism, thunder effects, real-time chat and history, fully responsive. Idea to live product in under ten days.",
+      "An immersive conversational client powered by Groq. Built from zero to deployment within a ten-day sprint. Styled with reactive glassmorphism, weather-driven particle dynamics, and absolute real-time stream processing.",
     href: "https://vibe-link-delta.vercel.app",
     cta: "Launch Vibe Link",
   },
@@ -60,10 +60,10 @@ const PROJECTS: Project[] = [
     status: "Solo build",
     tags: ["Brand identity", "Creatives", "Website", "Marketing"],
     body:
-      "A clothing brand I built alone. From the vision down to the identity, the creatives, the site and the marketing. My first real lesson in taking something from head to execution.",
+      "A streetwear label built single-handedly. Owned the entire pipeline: from initial brand positioning and collection identity to e-commerce deployment and algorithmic target marketing.",
   },
 ];
-
+ 
 export default function ArsenalPage() {
   return (
     <div className="w-full flex flex-col">
@@ -74,12 +74,12 @@ export default function ArsenalPage() {
               <span className="inline-block w-8 h-px bg-signal" /> 02 · THE ARSENAL
             </div>
           </Reveal>
-          <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.9] text-text">
+          <h1 className="font-display text-fluid-display leading-[0.9] text-text">
             <SplitText text="Built" />
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-md">
-            <p className="text-lg text-muted font-light">
-              Things I&apos;ve made after midnight. Some shipped, some shelved.. all mine.
+            <p className="text-fluid-subtitle text-muted font-light">
+              Digital assets forged in the quiet hours. Some shipped, some shelved—all built.
             </p>
           </Reveal>
         </div>

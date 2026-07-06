@@ -54,18 +54,16 @@ export default function Home() {
             initial={{ opacity: 0, y: 30, filter: "blur(12px)" }}
             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             transition={{ duration: 1.8, ease: EASE, delay: 0.1 }}
-            className="font-display leading-[0.85] text-text mb-10"
+            className="font-display text-fluid-hero leading-[0.8] text-text mb-10 tracking-tighter"
           >
-            <span className="block text-[22vw] sm:text-[18vw] lg:text-[14vw] tracking-tighter">
-              METEOR
-            </span>
+            METEOR
           </motion.h1>
 
           <Reveal delay={0.4} className="max-w-2xl mx-auto mb-14">
-            <p className="text-xl md:text-2xl text-muted font-light leading-relaxed">
-              A builder who works while the city sleeps.
+            <p className="text-fluid-subtitle text-muted font-light leading-relaxed">
+              Architecting digital ecosystems in the quiet hours.
               <br className="hidden md:block" />
-              <span className="text-text">Cars, code, and dark rainy nights.</span>
+              <span className="text-text italic">Cars, code, and dark rainy nights.</span>
             </p>
           </Reveal>
 
@@ -118,10 +116,9 @@ export default function Home() {
           <Reveal className="mb-10">
             <div className="eyebrow">01 · WHO</div>
           </Reveal>
-          <p className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-muted">
-            <span className="text-text">Seventeen years of quiet.</span> Chasing an{" "}
-            <span className="text-signal italic">absurd</span> academic mission by day, building
-            small dangerous things by night, and telling almost no one which is which.
+          <p className="font-display text-fluid-display leading-[1.1] text-muted font-light">
+            <span className="text-text">A lifetime spent in quiet execution.</span> Navigating
+            structured academic frontiers by day, forging <span className="text-signal italic">tactical systems</span> and mechanical art after midnight.
           </p>
         </div>
       </section>

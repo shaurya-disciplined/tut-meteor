@@ -29,6 +29,13 @@ const config: Config = {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
+      fontSize: {
+        "fluid-hero": "var(--text-hero)",
+        "fluid-display": "var(--text-display)",
+        "fluid-subtitle": "var(--text-subtitle)",
+        "fluid-body": "var(--text-body)",
+        "fluid-meta": "var(--text-meta)",
+      },
       letterSpacing: {
         eyebrow: "0.28em",
       },

@@ -23,19 +23,17 @@ export default function LibraryPage() {
               <span className="inline-block w-8 h-px bg-signal" /> 03 · THE LIBRARY
             </div>
           </Reveal>
-          <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.9] text-text">
+          <h1 className="font-display text-fluid-display leading-[0.9] text-text">
             <SplitText text="Read" />
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-lg">
-            <p className="text-lg text-muted font-light">
-              I don&apos;t chase books for entertainment. I keep the ones that promise a sharper way
-              to think. {TOTAL} of them, read and unread. You can tell a lot about someone by their
-              shelf.
+            <p className="text-fluid-subtitle text-muted font-light">
+              A curated index of intellectual frameworks. Selected not for leisure, but for structural utility. {TOTAL} systems of thought—compiled, indexed, and referenced.
             </p>
           </Reveal>
           <Reveal delay={0.55} className="mt-4">
             <p className="font-mono text-[11px] uppercase tracking-widest text-muted/70">
-              Every title opens. Pick one.
+              Select a volume to examine.
             </p>
           </Reveal>
         </div>
@@ -166,24 +164,20 @@ export default function LibraryPage() {
           <Reveal>
             <div className="eyebrow text-signal/80 mb-8">In the margins</div>
           </Reveal>
-          <div className="flex flex-col gap-6 text-lg md:text-xl font-light leading-relaxed text-muted">
+          <div className="flex flex-col gap-6 text-fluid-subtitle font-light leading-relaxed text-muted">
             <Reveal delay={0.05}>
               <p>
-                Not all of these have been read. Some I finished twice over. Some I opened once and set
-                back down. A few are still sealed, waiting for a version of me that&apos;s ready for
-                them.
+                An architecture of intent, not a trophy case. Some volumes have been thoroughly dissected, others remain sealed—anchors waiting for a future vector.
               </p>
             </Reveal>
             <Reveal delay={0.12}>
               <p>
-                A shelf isn&apos;t a scoreboard. It&apos;s a map of what pulls at you.. what you keep
-                meaning to become. The reaching says more than the finishing ever could.
+                A library isn&apos;t a scoreboard. It is a map of cognitive gravity. The choice to keep a text close speaks of direction; the collection itself is a blueprint of potential.
               </p>
             </Reveal>
             <Reveal delay={0.19}>
               <p className="text-text">
-                So take this as intent, not a trophy case. What I actually did with any of it stays
-                mostly off the page.
+                What I compile here are inputs. The actual outputs stay off the page.
               </p>
             </Reveal>
           </div>

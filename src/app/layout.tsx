@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda } from "next/font/google";
+import { Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
@@ -10,13 +10,12 @@ import { Navbar } from "@/components/Navbar";
 import { BackgroundLayer } from "@/components/BackgroundLayer";
 import { PageTransition } from "@/components/PageTransition";
 
-const display = Bodoni_Moda({
+const display = Cormorant_Garamond({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
-  adjustFontFallback: false,
 });
 
 const sans = localFont({

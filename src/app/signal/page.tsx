@@ -79,13 +79,12 @@ export default function SignalPage() {
               <span className="inline-block w-8 h-px bg-signal" /> 06 · THE SIGNAL
             </div>
           </Reveal>
-          <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.9] text-text">
+          <h1 className="font-display text-fluid-display leading-[0.9] text-text">
             <SplitText text="Reach" />
           </h1>
           <Reveal delay={0.4} className="mt-8 max-w-md">
-            <p className="text-lg text-muted font-light">
-              If the vibe hits.. cars, code, or just a good late night conversation.. pick a
-              frequency.
+            <p className="text-fluid-subtitle text-muted font-light">
+              For collaborations at the intersection of graphics, systems, and design. Pick a frequency.
             </p>
           </Reveal>
         </div>

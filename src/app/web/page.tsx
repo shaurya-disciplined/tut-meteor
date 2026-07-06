@@ -15,12 +15,12 @@ type NodeT = {
 };
 
 const NODES: NodeT[] = [
-  { id: "mission", label: "The Mission", x: 25, y: 24, desc: "JEE 2027. Quiet, relentless, and mostly invisible from the outside. The one thing that comes before everything else." },
-  { id: "building", label: "Building", x: 75, y: 24, desc: "AI, agents, and interfaces made after midnight. Ideas moved from head to shipped, fast." },
-  { id: "vibe-link", label: "Vibe Link", x: 16, y: 53, desc: "First full AI product, built from zero in under ten days.", link: "https://vibe-link-delta.vercel.app", linkText: "Launch" },
-  { id: "frame", label: "The Frame", x: 84, y: 53, desc: "Training, discipline, and a body kept as sharp as the mind." },
-  { id: "frequency", label: "The Frequency", x: 33, y: 80, desc: "Fast cars, dark rain, late music, and long conversations about systems." },
-  { id: "long-game", label: "The Long Game", x: 67, y: 80, desc: "Leverage over any single result. Building toward something that outlasts an exam." },
+  { id: "mission", label: "The Mission", x: 25, y: 24, desc: "JEE 2027. A strategic, multi-year academic challenge. Executed in absolute silence and invisible from the outside. The anchor that takes absolute priority." },
+  { id: "building", label: "Building", x: 75, y: 24, desc: "Systems compilation: AI agents, web architectures, and advanced interactive design. Forging ideas directly into production frameworks under midnight hours." },
+  { id: "vibe-link", label: "Vibe Link", x: 16, y: 53, desc: "Groq-integrated chat platform. Shipped from concept to release in 10 days, validating my capacity to learn and deploy new technology stacks rapidly.", link: "https://vibe-link-delta.vercel.app", linkText: "Launch" },
+  { id: "frame", label: "The Frame", x: 84, y: 53, desc: "Biological systems optimization. Physical conditioning and strict discipline, maintaining physical output to match cognitive capacity." },
+  { id: "frequency", label: "The Frequency", x: 33, y: 80, desc: "Kinetic inputs. High-performance automotive design, deep rainfall, ambient frequencies, and technical dialogues on modular architectures." },
+  { id: "long-game", label: "The Long Game", x: 67, y: 80, desc: "Long-term compounding. Focusing on structural leverage and core abilities that scale far beyond short-term milestones." },
 ];
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -71,9 +71,9 @@ export default function ConstellationPage() {
       </motion.div>
 
       {/* header */}
-      <div className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 z-30 text-center pointer-events-none px-4">
+      <div className="absolute top-24 md:top-28 left-1/2 -translate-x-1/2 z-30 text-center pointer-events-none px-4 w-full max-w-2xl">
         <div className="eyebrow mb-3">04 · THE CONSTELLATION</div>
-        <h1 className="font-display text-4xl md:text-5xl text-text">Everything, connected</h1>
+        <h1 className="font-display text-fluid-display leading-[0.9] text-text">Everything, connected</h1>
         <p className="font-mono text-[10px] uppercase tracking-widest text-muted mt-3">
           Move to explore · tap a node
         </p>

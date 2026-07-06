@@ -6,6 +6,13 @@
   :root {
     --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-wipe: cubic-bezier(0.83, 0, 0.17, 1);
+    
+    /* Fluid typography scales */
+    --text-hero: clamp(4.5rem, 16vw, 12rem);
+    --text-display: clamp(2.5rem, 7vw, 5.5rem);
+    --text-subtitle: clamp(1.2rem, 2.5vw, 1.8rem);
+    --text-body: clamp(0.95rem, 1.2vw, 1.15rem);
+    --text-meta: clamp(0.75rem, 0.9vw, 0.85rem);
   }
 
   html {

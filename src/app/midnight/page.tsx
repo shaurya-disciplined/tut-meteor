@@ -23,7 +23,7 @@ export default function MidnightPage() {
             <span className="inline-block w-8 h-px bg-signal" /> 05 · MIDNIGHT
           </div>
         </Reveal>
-        <h1 className="font-display text-[18vw] md:text-[13vw] leading-[0.85] text-text">
+        <h1 className="font-display text-fluid-display leading-[0.85] text-text">
           <SplitText text="Midnight" />
         </h1>
         <Reveal delay={0.4}>
@@ -32,20 +32,17 @@ export default function MidnightPage() {
           </p>
         </Reveal>
       </VideoBand>
-
+ 
       {/* ---------- STATEMENT ---------- */}
       <section className="relative overflow-hidden px-6 lg:px-12 py-32 md:py-44">
         <ShootingStars starCount={30} streaks={1} className="opacity-70" />
         <div className="relative z-10 max-w-4xl mx-auto">
-          <p className="font-display text-3xl md:text-5xl lg:text-6xl leading-[1.15] text-muted">
-            <span className="text-text">When the work is done</span> and the city finally goes quiet,
-            there&apos;s one more thing that keeps me up.
+          <p className="font-display text-fluid-display leading-[1.15] text-muted font-light">
+            <span className="text-text">When the compile is clean</span> and the city finally fades out, the mechanics of raw speed take over.
           </p>
           <Reveal delay={0.2} className="mt-10 max-w-xl">
-            <p className="text-lg md:text-xl text-muted font-light leading-relaxed">
-              These are the dream cars. Machines built to do one thing perfectly.. speed as a kind of
-              honesty. I don&apos;t own them yet, and that was never the point. You keep a picture of
-              where you&apos;re going.
+            <p className="text-fluid-subtitle text-muted font-light leading-relaxed">
+              Vehicles of pure kinetic intent. Masterpieces engineered for singular performance—where raw speed serves as absolute structural honesty. These designs map the trajectory; they delineate where we are headed.
             </p>
           </Reveal>
         </div>
