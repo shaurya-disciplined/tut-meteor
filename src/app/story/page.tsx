@@ -1,58 +1,13 @@
 "use client";
 
 import React, { useRef } from "react";
+import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal, SplitText } from "@/components/Reveal";
 import { Footer } from "@/components/Footer";
 import { VideoBand } from "@/components/VideoBand";
 import { WebGLImage } from "@/components/WebGLImage";
-
-const CHAPTERS = [
-  {
-    n: "01",
-    title: "The Iron Base",
-    years: "Jnana Prabodhini Prashala",
-    lines: [
-      "Six years spent under a quiet kind of discipline.",
-      "It taught me to think for myself, without waiting for anyone's nod or applause.",
-      "Something got built into me back then. It still holds when everything around it shakes.",
-    ],
-    img: "/images/samurai-temple.jpg",
-  },
-  {
-    n: "02",
-    title: "The Pressure Chamber",
-    years: "The Quiet Grinds",
-    lines: [
-      "I stopped waiting to feel motivated and just built the routine instead.",
-      "When the pressure climbed, it was the system that carried me, never the mood.",
-      "Late nights in Pune, learning to stay sharp while the city slept.",
-    ],
-    img: "/images/nishan-rider.jpg",
-  },
-  {
-    n: "03",
-    title: "Proof of Concept",
-    years: "The Breakthroughs",
-    lines: [
-      "The year the ideas finally left my head.",
-      "Built a clothing brand from nothing, then an AI app in ten days, teaching myself the stack as I went.",
-      "The lesson stuck. Ideas are cheap. Shipping is the whole game.",
-    ],
-    img: "/images/bosphorus-window.jpg",
-  },
-  {
-    n: "04",
-    title: "The Long Horizon",
-    years: "Continuous Operations",
-    lines: [
-      "The building never really stops.",
-      "I am not chasing a good week. I am setting things up to still matter in ten years.",
-      "The focus is narrow, the resolution is high.",
-    ],
-    img: "/images/city-torii-night.jpg",
-  },
-];
+import { CHAPTERS } from "@/data/chapters";
 
 function ParallaxWatermark({ text, side }: { text: string; side: "left" | "right" }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -93,7 +48,7 @@ export default function StoryPage() {
           <div className="w-full md:w-1/3 pb-2">
             <Reveal delay={0.3}>
               <p className="font-mono text-sm leading-loose text-muted uppercase tracking-widest text-justify">
-                A chronologic map of the pressure points, systems, and structures that built the engine. No shortcuts. No noise. Just the architecture of intent.
+                A chronologic map of the pressure points, systems, and structures that built the engine. Four chapters. Walk into any of them.
               </p>
             </Reveal>
           </div>
@@ -106,12 +61,14 @@ export default function StoryPage() {
           {CHAPTERS.map((ch, i) => {
             const isEven = i % 2 === 0;
             return (
-              <div
-                key={ch.n}
-                className="relative py-32 md:py-48 border-t border-line/30 group"
+              <Link
+                key={ch.slug}
+                href={`/story/${ch.slug}`}
+                data-cursor="open"
+                className="relative block py-32 md:py-48 border-t border-line/30 group"
               >
                 {/* Massive Parallax Number */}
-                <ParallaxWatermark text={ch.n} side={isEven ? "right" : "left"} />
+                <ParallaxWatermark text={ch.numeral} side={isEven ? "right" : "left"} />
 
                 <div
                   className={`flex flex-col ${
@@ -121,27 +78,22 @@ export default function StoryPage() {
                   {/* Visual WebGL Block */}
                   <div className="w-full md:w-[45%] relative">
                     <Reveal>
-                      {/* Technical bounding box styling */}
                       <div className="relative p-3 md:p-5 border border-line/20 rounded-sm bg-void/50 backdrop-blur-sm">
-                        {/* Corner targets */}
                         <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-signal/70 transition-colors group-hover:border-signal" />
                         <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-signal/70 transition-colors group-hover:border-signal" />
-                        
-                        {/* Interactive WebGL Image */}
+
                         <WebGLImage
-                          src={ch.img}
+                          src={ch.hero}
                           alt={ch.title}
                           containerClassName={`w-full ${
                             isEven ? "aspect-[4/5]" : "aspect-[5/4]"
                           } rounded-sm overflow-hidden`}
                           className="w-full h-full grayscale opacity-70 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000 ease-out"
                         />
-                        
-                        {/* Overlaid Data metric */}
+
                         <div className="absolute bottom-6 left-6 mix-blend-difference pointer-events-none">
                           <div className="font-mono text-[9px] text-text/80 tracking-[0.3em] uppercase">
-                            {/* deterministic pseudo-coordinate: Math.random() here breaks SSR hydration */}
-                            SEQ_{ch.n} / LAT.{((i * 23.517 + 18.5204) % 90).toFixed(4)}
+                            SEQ_{ch.numeral} / LAT.{((i * 23.517 + 18.5204) % 90).toFixed(4)}
                           </div>
                         </div>
                       </div>
@@ -152,22 +104,18 @@ export default function StoryPage() {
                   <div className="w-full md:w-[55%] flex flex-col justify-center relative z-10">
                     <Reveal>
                       <div className="font-mono text-xs uppercase tracking-[0.3em] text-signal mb-8 flex items-center gap-4">
-                        {ch.n} <span className="w-8 h-px bg-line" /> {ch.years}
+                        {ch.numeral} <span className="w-8 h-px bg-line" /> {ch.years}
                       </div>
-                      <h2 className="font-display text-5xl md:text-7xl lg:text-8xl text-text leading-[0.9] mb-12 tracking-tight">
+                      <h2 className="font-display text-5xl md:text-7xl lg:text-8xl text-muted group-hover:text-text transition-colors duration-500 leading-[0.9] mb-12 tracking-tight">
                         {ch.title}
                       </h2>
                       <div className="flex flex-col gap-8 max-w-xl">
-                        {ch.lines.map((line, j) => (
+                        {ch.cardLines.map((line, j) => (
                           <div key={j} className="flex gap-4 items-start">
-                            <span className="font-mono text-[10px] text-signal/40 mt-2.5">
-                              0{j + 1}
-                            </span>
+                            <span className="font-mono text-[10px] text-signal/40 mt-2.5">0{j + 1}</span>
                             <p
                               className={`leading-relaxed font-light ${
-                                j === 0
-                                  ? "text-2xl md:text-3xl text-text"
-                                  : "text-lg md:text-xl text-muted"
+                                j === 0 ? "text-2xl md:text-3xl text-text" : "text-lg md:text-xl text-muted"
                               }`}
                             >
                               {line}
@@ -175,10 +123,13 @@ export default function StoryPage() {
                           </div>
                         ))}
                       </div>
+                      <span className="mt-12 inline-flex w-fit items-center gap-2.5 rounded-full border border-signal/50 px-5 py-2.5 font-mono text-[11px] uppercase tracking-widest text-signal group-hover:bg-signal group-hover:text-void transition-colors duration-300">
+                        Read the chapter <span aria-hidden>→</span>
+                      </span>
                     </Reveal>
                   </div>
                 </div>
-              </div>
+              </Link>
             );
           })}
           <div className="border-t border-line/30" />

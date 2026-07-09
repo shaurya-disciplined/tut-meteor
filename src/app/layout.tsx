@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cormorant_Garamond } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
@@ -35,6 +35,12 @@ const mono = localFont({
 });
 
 import { WebGLCanvasManager } from "@/components/WebGLCanvas";
+
+// Tints the phone browser chrome (address bar, status area) to the void, so
+// the site reads edge to edge on mobile instead of sitting in a white frame.
+export const viewport: Viewport = {
+  themeColor: "#08080A",
+};
 
 export const metadata: Metadata = {
   title: "tut.meteor",

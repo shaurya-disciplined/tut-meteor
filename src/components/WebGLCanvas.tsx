@@ -253,20 +253,37 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
     // 4. Raw Animation Loop
     const clock = new THREE.Clock();
     let animationFrameId: number;
+    let frozen = false;
 
     const renderLoop = () => {
+      if (frozen) return;
       // Smoothly interpolate mouse and velocity for an extremely sluggish, heavy, viscous feel
       uniforms.uMouse.value.x += (targetMouse.x - uniforms.uMouse.value.x) * 0.015;
       uniforms.uMouse.value.y += (targetMouse.y - uniforms.uMouse.value.y) * 0.015;
       uniforms.uVelocity.value += (targetVelocity - uniforms.uVelocity.value) * 0.02;
-      
+
       uniforms.uTime.value = clock.getElapsedTime();
 
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(renderLoop);
     };
 
-    renderLoop();
+    // Reduced motion: hold a single still frame of fog instead of animating.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      uniforms.uTime.value = 40.0; // a pleasing settled moment of the field
+      renderer.render(scene, camera);
+      frozen = true;
+    } else {
+      renderLoop();
+
+      // Battery guard: if the visitor is nearly out of charge and not plugged
+      // in, settle the fog to a still frame instead of burning their last %.
+      type BatteryLike = { level: number; charging: boolean };
+      const nav = navigator as Navigator & { getBattery?: () => Promise<BatteryLike> };
+      nav.getBattery?.().then((b) => {
+        if (b.level < 0.15 && !b.charging) frozen = true;
+      }).catch(() => {});
+    }
 
     // 5. Cleanup
     return () => {

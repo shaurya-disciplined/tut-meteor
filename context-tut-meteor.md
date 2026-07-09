@@ -295,3 +295,29 @@ aware; a node's line brightens to 0.75 on hover) and carved-stone emboss on the 
 (engraved textShadow). Liquid images = `/story` (owner). **Glass refraction lens intentionally skipped**:
 needs a second full-scene render pass (mobile cost) and violates the one-signature-per-page guardrail.
 Next: Phase 5 (restraint pass + ship).
+
+## 18. Phase 5 — Restraint and Ship (2026-07-07) — PLAN COMPLETE
+
+- **Smoke fallbacks (the last guardrail gap):** under `prefers-reduced-motion` the shader renders one settled
+  still frame (`uTime=40`) and never animates; if the Battery API reports <15% and not charging, the loop
+  settles to a still frame instead of draining the phone. Both live in the raw loop in `WebGLCanvas.tsx`.
+- **Custom 404** — `src/app/not-found.tsx`, "404 · DEAD AIR / Nothing broadcasts here." with a slow static
+  ring and a magnetic "Back to the signal" button. Verified serving on dead routes.
+- **`viewport.themeColor: #08080A`** in `layout.tsx` so phone browser chrome tints to the void.
+
+All five phases of `filesssss/NOCTURNE_MASTERPLAN_v2.md` are now executed. Remaining work is taste-tuning
+on real devices, not construction.
+
+## 19. NOCTURNE v3 — "The Depth Update" (PLAN ONLY, 2026-07-07)
+
+**Active plan: `filesssss/NOCTURNE_DEPTH_v3.md`. Nothing executed yet — owner explicitly requested plan only.**
+Scope: every surface section becomes a door. `/arsenal/[slug]` (5 project pages with a per-project "tint"
+system: one accent, one motif, one cheap signature interaction each), `/story/[slug]` (4 long-form editorial
+chapters, blocked on owner's raw writing), `/midnight/[slug]` (3 car shrine pages with "why this car" essays +
+gauge-cluster spec HUDs), `/dossier` (interests as a declassified file: ON RECORD / IN TRAINING / FREQUENCIES /
+STATIC with redaction bars / COORDINATES), constellation v2 (satellite nodes per wing, focus mode, nodes
+navigate), plus proposed extras (transmission log, live Pune clock, `midnight` easter egg, per-page OG cards,
+/now). Governed by two laws written into the plan: the **Table Rule** (six-point vulnerability filter — depth
+through scenes and systems, never confession) and the **Device Mercy Rule** (one WebGL context total, CSS/SVG/
+Framer transform+opacity only, image weight caps, 4x-throttle test gate). Build order Phases A–G in the plan;
+Phase D and E blocked on owner content (§9 of the plan lists exactly what's needed from him per phase).
