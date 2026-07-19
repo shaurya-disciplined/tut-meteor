@@ -52,6 +52,7 @@ export const BOOKS: Book[] = [
     title: "The Compound Effect",
     author: "Darren Hardy",
     category: "Focus & Systems",
+    note: "read",
     blurb: "Nothing dramatic. Just the math of small choices, run long enough.",
   },
   {
@@ -59,7 +60,7 @@ export const BOOKS: Book[] = [
     title: "Hyperfocus",
     author: "Chris Bailey",
     category: "Focus & Systems",
-    note: "~60 pages in",
+    note: "read",
     blurb:
       "Attention as the only currency that matters. I never finished it; the first half already did its job.",
   },
@@ -68,6 +69,7 @@ export const BOOKS: Book[] = [
     title: "Getting Things Done",
     author: "David Allen",
     category: "Focus & Systems",
+    note: "read",
     blurb: "Get it out of your head and into a system you trust. Old, dry, still works.",
   },
   {
@@ -80,6 +82,14 @@ export const BOOKS: Book[] = [
   },
 
   // Stoicism & Mind
+  {
+    slug: "the-alchemist",
+    title: "The Alchemist",
+    author: "Paulo Coelho",
+    category: "Stoicism & Mind",
+    note: "read",
+    blurb: "A fable about following your Personal Legend. Finished it many years ago, but the core idea of pursuing destiny never left.",
+  },
   {
     slug: "meditations",
     title: "Meditations",
@@ -130,6 +140,7 @@ export const BOOKS: Book[] = [
     title: "The Subtle Art of Not Giving a F*ck",
     author: "Mark Manson",
     category: "Stoicism & Mind",
+    note: "read",
     blurb:
       "Not about caring less. It's about choosing what's worth caring about. The title oversells; the point lands.",
   },
@@ -138,6 +149,7 @@ export const BOOKS: Book[] = [
     title: "The Rudest Book Ever",
     author: "Shwetabh Gangwar",
     category: "Stoicism & Mind",
+    note: "read",
     blurb: "Blunter than most of the genre dares to be. Refreshing when you're tired of gentle.",
   },
   {
@@ -165,10 +177,19 @@ export const BOOKS: Book[] = [
 
   // Business & Leverage
   {
+    slug: "the-richest-man-in-babylon",
+    title: "The Richest Man in Babylon",
+    author: "George S. Clason",
+    category: "Business & Leverage",
+    note: "one sitting",
+    blurb: "The oldest and simplest rules of wealth, told through parables. So engaging I finished it in one single sitting.",
+  },
+  {
     slug: "the-almanack-of-naval-ravikant",
     title: "The Almanack of Naval Ravikant",
     author: "Eric Jorgenson",
     category: "Business & Leverage",
+    note: "currently reading",
     blurb: "Wealth and happiness treated as skills you can learn. The closest thing I have to a manual.",
   },
   {
@@ -176,6 +197,7 @@ export const BOOKS: Book[] = [
     title: "The Millionaire Fastlane",
     author: "MJ DeMarco",
     category: "Business & Leverage",
+    note: "read",
     blurb: "Loud and a little crude, and right about the gap between trading time and building leverage.",
   },
   {
@@ -190,6 +212,7 @@ export const BOOKS: Book[] = [
     title: "The Psychology of Money",
     author: "Morgan Housel",
     category: "Business & Leverage",
+    note: "read",
     blurb: "Money is mostly behaviour, not math. The stories are the lesson.",
   },
   {
@@ -197,6 +220,7 @@ export const BOOKS: Book[] = [
     title: "$100M Offers",
     author: "Alex Hormozi",
     category: "Business & Leverage",
+    note: "read",
     blurb: "How to build an offer people feel stupid saying no to. Practical to the point of being a workbook.",
   },
   {
@@ -204,6 +228,7 @@ export const BOOKS: Book[] = [
     title: "$100M Leads",
     author: "Alex Hormozi",
     category: "Business & Leverage",
+    note: "read",
     blurb: "The other half: getting strangers to raise their hand. I read these two as a pair.",
   },
   {
@@ -239,6 +264,7 @@ export const BOOKS: Book[] = [
     title: "How to Get Rich",
     author: "Felix Dennis",
     category: "Business & Leverage",
+    note: "read",
     blurb: "A poet who got rich telling you it may not be worth what you think. Honest in a way most of these aren't.",
   },
   {
@@ -246,6 +272,7 @@ export const BOOKS: Book[] = [
     title: "Just Keep Buying",
     author: "Nick Maggiulli",
     category: "Business & Leverage",
+    note: "read",
     blurb: "The boring, correct answer to money. Boring is the point.",
   },
   {
@@ -260,6 +287,7 @@ export const BOOKS: Book[] = [
     title: "Build, Don't Talk",
     author: "Raj Shamani",
     category: "Business & Leverage",
+    note: "read",
     blurb: "Light and direct, but the title alone is a decent operating principle.",
   },
   {
@@ -273,11 +301,18 @@ export const BOOKS: Book[] = [
 
   // People & Persuasion
   {
+    slug: "concise-laws-of-human-nature",
+    title: "The Concise Laws of Human Nature",
+    author: "Robert Greene",
+    category: "People & Persuasion",
+    blurb: "A framework for decoding the hidden motivations behind human behavior. You can't read others until you understand your own dark tendencies.",
+  },
+  {
     slug: "how-to-win-friends",
     title: "How to Win Friends & Influence People",
     author: "Dale Carnegie",
     category: "People & Persuasion",
-    note: "almost finished",
+    note: "read",
     blurb:
       "A century old and still the base layer for dealing with people. I keep going back to chapters instead of moving on.",
   },
@@ -307,6 +342,7 @@ export const BOOKS: Book[] = [
     title: "The Art of War",
     author: "Sun Tzu",
     category: "People & Persuasion",
+    note: "read",
     blurb: "Not really about war. About position, patience, and not fighting battles you don't need to.",
   },
   {
