@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useRef, useEffect } from "react";
-import * as THREE from "three";
 
 const vertexShader = `
   varying vec2 vUv;
@@ -172,7 +171,15 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!bgCanvasRef.current) return;
+    let disposed = false;
+    let cleanup: (() => void) | undefined;
+
+    // three is loaded dynamically (client only) so it never enters the server
+    // bundle. That keeps Next's dev static-paths worker from crashing on a missing
+    // './vendor-chunks/three.js' chunk on dynamic routes, while keeping the raw
+    // three.js pattern (outside R3F) exactly as it was.
+    import("three").then((THREE) => {
+    if (disposed || !bgCanvasRef.current) return;
 
     // Mobile gets a lighter shader (3 fbm octaves vs 5) and a lower pixel ratio.
     // Phones are the primary audience, so the smoke must stay smooth there.
@@ -286,16 +293,22 @@ export function WebGLCanvasManager({ children }: { children: React.ReactNode }) 
     }
 
     // 5. Cleanup
-    return () => {
+    cleanup = () => {
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(animationFrameId);
       clearTimeout(velocityTimeout);
-      
+
       geometry.dispose();
       material.dispose();
       renderer.dispose();
+    };
+    });
+
+    return () => {
+      disposed = true;
+      cleanup?.();
     };
   }, []);
 

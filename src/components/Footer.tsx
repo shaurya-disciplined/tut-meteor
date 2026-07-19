@@ -14,6 +14,7 @@ const ROUTES = [
   { label: "Constellation", href: "/web" },
   { label: "Midnight", href: "/midnight" },
   { label: "Signal", href: "/signal" },
+  { label: "Dossier", href: "/dossier" },
   { label: "Codex", href: "/codex" },
 ];
 

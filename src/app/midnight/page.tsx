@@ -7,11 +7,8 @@ import { Footer } from "@/components/Footer";
 import { VideoBand } from "@/components/VideoBand";
 import { ShootingStars } from "@/components/ShootingStars";
 
-const CARS = [
-  { src: "/images/pagani-topdown.jpg", name: "Pagani Huayra", note: "Art you can hear coming.", pos: "center" },
-  { src: "/images/car-bugatti-dark.jpg", name: "Bugatti Chiron", note: "Quiet menace, folded in black.", pos: "center 60%" },
-  { src: "/images/zonda-studio.jpg", name: "Pagani Zonda", note: "Carbon fiber poetry. The masterpiece.", pos: "center" },
-];
+import Link from "next/link";
+import { CARS } from "@/data/cars";
 
 export default function MidnightPage() {
   return (
@@ -51,22 +48,22 @@ export default function MidnightPage() {
       {/* ---------- CAR FEATURES ---------- */}
       <section className="px-6 lg:px-12 pb-10">
         <div className="max-w-6xl mx-auto flex flex-col gap-6 md:gap-10">
-          {CARS.map((car, i) => (
-            <Reveal key={car.name} y={30}>
-              <div className="group relative overflow-hidden rounded-sm ring-1 ring-line">
+          {CARS.map((car) => (
+            <Reveal key={car.slug} y={30}>
+              <Link href={`/midnight/${car.slug}`} className="block group relative overflow-hidden rounded-sm ring-1 ring-line cursor-pointer">
                 <div
                   className="aspect-[16/10] md:aspect-[21/9] bg-cover transition-transform duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
                   style={{ backgroundImage: `url(${car.src})`, backgroundPosition: car.pos, filter: "brightness(0.82) contrast(1.05)" }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent transition-opacity duration-700 group-hover:opacity-80" />
                 <div className="absolute bottom-0 left-0 p-6 md:p-8">
                   <div className="font-mono text-[10px] uppercase tracking-widest text-signal/80 mb-2">
-                    {String(i + 1).padStart(2, "0")}
+                    {car.index}
                   </div>
-                  <h2 className="font-display text-3xl md:text-5xl text-text">{car.name}</h2>
-                  <p className="mt-2 text-sm md:text-base text-muted font-light">{car.note}</p>
+                  <h2 className="font-display text-3xl md:text-5xl text-text transition-colors duration-500 group-hover:text-white">{car.title}</h2>
+                  <p className="mt-2 text-sm md:text-base text-muted font-light transition-colors duration-500 group-hover:text-signal/90">{car.subtitle}</p>
                 </div>
-              </div>
+              </Link>
             </Reveal>
           ))}
         </div>

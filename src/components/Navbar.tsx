@@ -13,6 +13,7 @@ const NAV_LINKS = [
   { label: "Constellation", href: "/web", index: "04" },
   { label: "Midnight", href: "/midnight", index: "05" },
   { label: "Signal", href: "/signal", index: "06" },
+  { label: "Dossier", href: "/dossier", index: "07" },
 ];
 
 export function Navbar() {
