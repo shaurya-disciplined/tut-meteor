@@ -382,7 +382,6 @@ export const BOOKS: Book[] = [
     title: "Day Trading Attention",
     author: "Gary Vaynerchuk",
     category: "Tech & AI",
-    noCover: true,
     blurb: "Attention is the market now. Loud delivery, but he isn't wrong about where things went.",
   },
 ];
