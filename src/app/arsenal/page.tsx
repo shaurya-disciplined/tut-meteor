@@ -9,21 +9,50 @@ import { PROJECTS } from "@/data/projects";
 export default function ArsenalPage() {
   return (
     <div className="w-full flex flex-col">
-      <section className="px-6 lg:px-12 pt-40 md:pt-52 pb-16">
-        <div className="max-w-6xl mx-auto">
-          <Reveal className="mb-6">
-            <div className="eyebrow flex items-center gap-3">
-              <span className="inline-block w-8 h-px bg-signal" /> 02 · THE ARSENAL
-            </div>
-          </Reveal>
-          <h1 className="font-display text-fluid-display leading-[0.9] text-text">
-            <SplitText text="Built" />
-          </h1>
-          <Reveal delay={0.4} className="mt-8 max-w-md">
-            <p className="text-fluid-subtitle text-muted font-light">
-              Things I made after midnight. Some shipped, some shelved.. all mine.
-            </p>
-          </Reveal>
+      <section className="relative px-6 lg:px-12 pt-40 md:pt-56 pb-24 border-b border-line/30 overflow-hidden">
+        {/* Radar / Grid Background for Arsenal */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(176,136,90,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(176,136,90,0.03)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_70%_50%_at_50%_50%,#000_10%,transparent_100%)] pointer-events-none" />
+        
+        {/* Tactical circular radar element on the right */}
+        <div className="absolute top-1/2 right-0 md:right-12 -translate-y-1/2 w-64 h-64 border border-signal/10 rounded-full flex items-center justify-center pointer-events-none opacity-50 md:opacity-100">
+           <div className="w-48 h-48 border border-signal/20 rounded-full border-dashed animate-[spin_60s_linear_infinite]" />
+           <div className="absolute w-full h-px bg-signal/10" />
+           <div className="absolute h-full w-px bg-signal/10" />
+        </div>
+
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+          <div className="lg:col-span-8">
+            <Reveal className="mb-6">
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-signal/80 flex items-center gap-3">
+                <span className="w-10 h-px bg-signal" /> Secure Storage // 02
+              </div>
+            </Reveal>
+            <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.8] text-text uppercase tracking-tight drop-shadow-[0_0_15px_rgba(176,136,90,0.15)]">
+              <SplitText text="Arsenal" />
+            </h1>
+          </div>
+          
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <Reveal delay={0.3}>
+               <div className="p-6 md:p-8 border border-line/50 bg-void/80 backdrop-blur-xl rounded relative hover:border-signal/50 transition-colors shadow-2xl">
+                 {/* Tactical framing corners */}
+                 <div className="absolute -top-px -right-px w-4 h-4 border-t-2 border-r-2 border-signal" />
+                 <div className="absolute -bottom-px -left-px w-4 h-4 border-b-2 border-l-2 border-signal" />
+                 
+                 <div className="flex justify-between items-center mb-5 pb-5 border-b border-line/50 font-mono text-[9px] uppercase tracking-widest text-muted">
+                    <span>System_Status</span>
+                    <span className="text-signal flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-signal rounded-full animate-ping" />
+                      Live
+                    </span>
+                 </div>
+                 
+                 <p className="font-mono text-xs leading-loose text-text/80 uppercase tracking-widest text-justify">
+                   Deployed systems, experimental architectures, and things built entirely after midnight. The functional infrastructure behind the ambition.
+                 </p>
+               </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 

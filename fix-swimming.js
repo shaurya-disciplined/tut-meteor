@@ -26,8 +26,8 @@ const download = (url, dest) => {
 
 async function main() {
   const dest = path.join('public', 'dossier', 'swimming.jpg');
-  // Highly reliable Unsplash URL for dark swimming pool
-  await download('https://images.unsplash.com/photo-1519315901367-f34f915de626?q=80&w=2000&auto=format&fit=crop', dest);
+  // Highly reliable Wikipedia URL for a dark/moody swimming pool (public domain/creative commons)
+  await download('https://upload.wikimedia.org/wikipedia/commons/7/7b/Water_polo_pool.jpg', dest);
   console.log('Swimming image downloaded successfully!');
 }
 

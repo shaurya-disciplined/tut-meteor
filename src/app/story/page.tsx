@@ -33,23 +33,39 @@ export default function StoryPage() {
   return (
     <div className="w-full flex flex-col overflow-hidden">
       {/* ---------- HERO DOSSIER ---------- */}
-      <section className="relative px-6 lg:px-12 pt-40 md:pt-64 pb-32">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between gap-12">
-          <div className="flex-1">
-            <Reveal className="mb-8">
-              <div className="font-mono text-xs uppercase tracking-[0.4em] text-signal/80 flex items-center gap-4">
-                <span className="w-12 h-px bg-signal/50" /> Dossier File // 01
+      <section className="relative px-6 lg:px-12 pt-40 md:pt-56 pb-24 border-b border-line/30 overflow-hidden">
+        {/* Massive Background Typography */}
+        <div className="absolute top-20 right-[-2%] text-[18vw] font-display text-line/20 pointer-events-none select-none uppercase tracking-tighter leading-none">
+          SYSTEMS
+        </div>
+        
+        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-end">
+          <div className="lg:col-span-8">
+            <Reveal className="mb-6">
+              <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-signal/80 flex items-center gap-3">
+                <div className="w-2 h-2 bg-signal rounded-full animate-pulse shadow-[0_0_8px_rgba(176,136,90,0.8)]" />
+                <span className="px-3 py-1.5 border border-signal/30 bg-signal/10 rounded">The Engine // Core Logs</span>
               </div>
             </Reveal>
-            <h1 className="font-display text-[15vw] md:text-[10vw] leading-[0.8] text-text uppercase tracking-tight">
+            <h1 className="font-display text-[16vw] md:text-[11vw] leading-[0.8] text-text uppercase tracking-tight drop-shadow-[0_0_15px_rgba(176,136,90,0.1)]">
               <SplitText text="Origin" />
             </h1>
           </div>
-          <div className="w-full md:w-1/3 pb-2">
-            <Reveal delay={0.3}>
-              <p className="font-mono text-sm leading-loose text-muted uppercase tracking-widest text-justify">
-                A chronologic map of the pressure points, systems, and structures that built the engine. Four chapters. Walk into any of them.
-              </p>
+          
+          <div className="lg:col-span-4 flex flex-col gap-6">
+            <Reveal delay={0.2}>
+               <div className="p-6 md:p-8 border border-line/50 bg-surface/40 backdrop-blur-lg rounded relative group hover:border-signal/50 transition-colors shadow-2xl">
+                 <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-signal/50 via-signal/10 to-transparent" />
+                 
+                 <div className="flex justify-between items-center mb-5 pb-5 border-b border-line/50 font-mono text-[9px] uppercase tracking-widest text-muted">
+                    <span>Clearance_Level</span>
+                    <span className="text-signal">Unlocked</span>
+                 </div>
+                 
+                 <p className="font-mono text-xs leading-loose text-text/80 uppercase tracking-widest text-justify">
+                   A chronologic map of the pressure points, systems, and structures that built the engine. Four chapters. Walk into any of them.
+                 </p>
+               </div>
             </Reveal>
           </div>
         </div>
