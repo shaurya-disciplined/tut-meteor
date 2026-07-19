@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond } from "next/font/google";
-import localFont from "next/font/local";
+import { Playfair_Display, Manrope, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Preloader } from "@/components/Preloader";
@@ -12,25 +11,25 @@ import { Navbar } from "@/components/Navbar";
 import { BackgroundLayer } from "@/components/BackgroundLayer";
 import { PageTransition } from "@/components/PageTransition";
 
-const display = Cormorant_Garamond({
+const display = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-display",
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   style: ["normal", "italic"],
   display: "swap",
 });
 
-const sans = localFont({
-  src: "./fonts/GeistVF.woff",
+const sans = Manrope({
+  subsets: ["latin"],
   variable: "--font-sans",
-  weight: "100 900",
+  weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",
 });
 
-const mono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
   variable: "--font-mono",
-  weight: "100 900",
+  weight: ["200", "300", "400", "500", "600", "700"],
   display: "swap",
 });
 

@@ -1,273 +1,281 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
+
 import { Reveal } from "@/components/Reveal";
 import { Magnetic } from "@/components/Magnetic";
 import { Footer } from "@/components/Footer";
+import ScrambleText from "@/components/ScrambleText";
+import AnimatedCounter from "@/components/AnimatedCounter";
 import {
   ON_RECORD,
   IN_TRAINING,
   FREQUENCIES,
-  WONT_DISCUSS,
   COORDINATES,
+  BEHAVIORAL_ANALYSIS,
 } from "@/data/dossier";
 
 export default function DossierPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   return (
-    <div className="relative w-full flex flex-col overflow-hidden">
-      {/* Classification bar */}
-      <div className="px-6 lg:px-12 pt-28 md:pt-32">
-        <div className="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3 border-y border-line py-3 font-mono text-[10px] uppercase tracking-widest text-muted">
-          <span className="text-signal">{"// Classified"}</span>
-          <span>Subject file</span>
-          <span className="hidden sm:inline">Clearance · need to know</span>
-          <span>File No. M-0214</span>
+    <div className="relative w-full flex flex-col bg-void min-h-screen">
+      <div className="max-w-[1400px] mx-auto w-full px-6 lg:px-12 pt-28 md:pt-32 pb-20">
+        
+        {/* Top HUD Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4 mb-8 font-mono text-[10px] uppercase tracking-widest text-muted">
+          <div className="flex gap-6">
+            <span className="text-signal animate-pulse">
+              <ScrambleText text="[ SYSTEM_ONLINE ]" delay={0.1} />
+            </span>
+            <span className="hidden sm:inline">Subject File · M-0214</span>
+          </div>
+          <span className="text-signal bg-signal/10 px-2 py-1 rounded">
+            <ScrambleText text="Clearance: NEED TO KNOW" delay={0.5} />
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 relative items-start">
+          
+          {/* LEFT SIDEBAR: Sticky Terminal HUD */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-32 flex flex-col gap-6">
+            <div className="relative aspect-[2.39/1] lg:aspect-square w-full rounded-lg overflow-hidden border border-line bg-surface/30">
+              <Image
+                src="/dossier/hero.jpg"
+                alt="Subject file"
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 33vw"
+                className="object-cover grayscale contrast-125 brightness-[0.4]"
+              />
+              <div className="absolute inset-0 bg-signal/10 mix-blend-overlay" />
+              <div className="absolute inset-0 flex flex-col justify-between p-5">
+                <div className="flex justify-between">
+                  <div className="w-2 h-2 bg-signal rounded-full animate-ping" />
+                  <span className="font-mono text-[9px] uppercase tracking-widest text-text/50">Rec_01</span>
+                </div>
+                <div>
+                  <h1 className="font-display text-4xl text-text leading-none mb-2">
+                    <ScrambleText text="Meteor" delay={0.8} />
+                  </h1>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-signal">
+                    Status: <ScrambleText text="ACTIVE_BUILDER" delay={1.2} speed={0.5} />
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="border border-line rounded-lg p-5 bg-surface/20 backdrop-blur-sm">
+              <div className="flex gap-4 mb-6">
+                <div className="flex-1 bg-void border border-line/30 rounded p-4 flex flex-col justify-between">
+                  <span className="font-mono text-[9px] text-muted tracking-widest uppercase">Age</span>
+                  <span className="font-display text-4xl text-text mt-2"><AnimatedCounter value={17} /></span>
+                </div>
+                <div className="flex-1 bg-void border border-line/30 rounded p-4 flex flex-col justify-between">
+                  <span className="font-mono text-[9px] text-muted tracking-widest uppercase">Books Processed</span>
+                  <span className="font-display text-4xl text-text mt-2"><AnimatedCounter value={37} /></span>
+                </div>
+              </div>
+              <div className="font-mono text-[11px] text-muted space-y-3">
+                <div className="flex justify-between pt-1">
+                  <span>Location</span>
+                  <span className="text-text">Pune [02:14]</span>
+                </div>
+              </div>
+            </div>
+
+            <Reveal>
+              <p className="font-mono text-xs leading-relaxed text-muted/80 border-l-2 border-signal/50 pl-4 mt-2">
+                {mounted && <ScrambleText text="> Everything in this file is true. Some of it is redacted. That is the point." speed={0.8} delay={1.5} />}
+              </p>
+            </Reveal>
+
+            {/* Added to make the sidebar taller and cooler */}
+            <div className="hidden lg:flex flex-col mt-4 font-mono text-[9px] uppercase tracking-widest text-muted/40 gap-1 border-t border-line/30 pt-6">
+               <p>{mounted && <ScrambleText text="> INITIATING HANDSHAKE..." delay={2} />}</p>
+               <p>{mounted && <ScrambleText text="> BYPASSING MAINFRAME PROTOCOLS..." delay={2.5} />}</p>
+               <p className="text-signal/50">{mounted && <ScrambleText text="> ACCESS GRANTED." delay={3} />}</p>
+            </div>
+          </aside>
+
+          {/* RIGHT COLUMN: Scrolling Bento Cards */}
+          <main className="lg:col-span-8 flex flex-col gap-8 pb-32">
+            
+            {/* Bento 1: On Record */}
+            <BentoCard number="01" title="ON RECORD" caption="Things done, stated flat.">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {ON_RECORD.map((it, i) => {
+                  const content = (
+                    <div className="bg-void border border-line/50 p-5 rounded hover:border-signal/40 transition-colors h-full flex flex-col justify-between group">
+                      <div>
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-signal font-mono text-[10px]">[{i + 1}]</span>
+                          <h3 className="font-mono text-[11px] uppercase tracking-widest text-text">{it.label}</h3>
+                        </div>
+                        <p className="text-sm text-muted font-sans font-light leading-relaxed">{it.body}</p>
+                      </div>
+                      {it.href && (
+                        <span className="mt-6 block font-mono text-[10px] text-signal opacity-50 group-hover:opacity-100 transition-opacity">
+                          ACCESS FILE →
+                        </span>
+                      )}
+                    </div>
+                  );
+                  return it.href ? (
+                    <Link key={i} href={it.href} className="block">
+                      {content}
+                    </Link>
+                  ) : (
+                    <div key={i}>{content}</div>
+                  );
+                })}
+              </div>
+              <Attachment src="/dossier/forts-new.jpg" fallback="/dossier/forts.jpg" id="LOG-A1" caption="Sighting: Sahyadris, Monsoon." />
+            </BentoCard>
+
+            {/* Bento 2: In Training */}
+            <BentoCard number="02" title="IN TRAINING" caption="The horizon. Fully intended.">
+              <div className="flex flex-col gap-1">
+                {IN_TRAINING.map((it, i) => (
+                  <div key={i} className="group flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-6 p-4 border-b border-line/30 hover:bg-surface/30 transition-colors">
+                    <div className="flex items-center gap-4">
+                      <span className="font-mono text-[9px] uppercase tracking-widest border border-signal/40 text-signal bg-signal/5 rounded px-2 py-1 w-20 text-center">
+                        {it.tag}
+                      </span>
+                      <span className="font-display text-xl sm:text-2xl text-text group-hover:text-white transition-colors">{it.label}</span>
+                    </div>
+                    <p className="text-sm text-muted font-sans font-light sm:text-right max-w-xs">{it.body}</p>
+                  </div>
+                ))}
+              </div>
+              <Attachment src="/dossier/gloves-new.jpg" fallback="/dossier/gloves.jpg" id="LOG-A2" caption="Physical conditioning protocol active." />
+            </BentoCard>
+
+            {/* Bento 3: HUD (Coordinates + Frequencies) */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <BentoCard number="03" title="COORDINATES" caption="Taste, rapid fire.">
+                <div className="flex flex-col gap-3 font-mono text-[10px] uppercase tracking-widest">
+                  {COORDINATES.map((c, i) => (
+                    <div key={i} className="flex justify-between items-end border-b border-line/30 pb-2">
+                      <span className="text-muted/60">{c.key}</span>
+                      <span className="text-text text-right max-w-[60%]">{c.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </BentoCard>
+
+              <BentoCard number="04" title="FREQUENCIES" caption="2am bandwidth.">
+                <div className="flex flex-wrap gap-2">
+                  {FREQUENCIES.map((f, i) => (
+                    <span key={i} className="font-mono text-[9px] uppercase tracking-widest text-muted border border-line/60 bg-void rounded px-3 py-1.5 hover:border-signal/60 hover:text-signal transition-colors">
+                      {f}
+                    </span>
+                  ))}
+                </div>
+              </BentoCard>
+            </div>
+
+            {/* Bento 5: Behavioral Profiling */}
+            <BentoCard number="05" title="BEHAVIORAL PROFILING" caption="Inferred from reading patterns & inputs.">
+               <div className="flex flex-col gap-6">
+                {BEHAVIORAL_ANALYSIS.map((item, i) => (
+                  <div key={i} className="flex flex-col gap-2 border-l-2 border-line/30 pl-4 hover:border-signal/50 transition-colors">
+                    <span className="text-signal font-mono text-[10px] uppercase tracking-widest">
+                      {">"} TRAIT_DETECTED: {item.trait}
+                    </span>
+                    <p className="text-sm font-sans font-light text-muted leading-relaxed">
+                      {item.observation}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </BentoCard>
+
+            {/* End Marker */}
+            <div className="mt-12 pt-8 border-t border-line flex flex-col items-start gap-8">
+              <div className="font-mono text-[10px] text-signal uppercase tracking-widest px-3 py-1 border border-signal/40 rounded">
+                <ScrambleText text="[ END OF FILE ]" delay={0.5} />
+              </div>
+              
+              <Magnetic>
+                <Link
+                  href="/signal"
+                  data-cursor="transmit"
+                  className="group relative inline-flex items-center gap-4 border border-signal/40 bg-signal/5 hover:bg-signal/10 px-8 py-4 overflow-hidden rounded transition-all duration-300"
+                >
+                  {/* Subtle scanline effect on hover */}
+                  <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(176,136,90,0.1)_50%)] bg-[length:100%_4px] opacity-0 group-hover:opacity-100 transition-opacity" />
+                  
+                  <div className="relative z-10 flex items-center gap-4">
+                    <div className="w-2 h-2 bg-signal rounded-full shadow-[0_0_8px_rgba(176,136,90,0.8)] animate-pulse" />
+                    <span className="font-mono text-xs uppercase tracking-[0.3em] text-text group-hover:text-signal transition-colors">
+                      Establish Comms
+                    </span>
+                  </div>
+                </Link>
+              </Magnetic>
+            </div>
+          </main>
         </div>
       </div>
-
-      {/* Hero */}
-      <section className="relative w-full mt-6">
-        <div className="relative h-[46vh] md:h-[62vh] w-full overflow-hidden">
-          <Image
-            src="/dossier/hero.jpg"
-            alt="Subject file"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover grayscale contrast-[1.05] brightness-[0.55]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-void/40 via-void/40 to-void" />
-          <div className="absolute inset-0 bg-signal/10 mix-blend-overlay" />
-
-          <div className="absolute inset-0 flex flex-col justify-end px-6 lg:px-12 pb-10">
-            <div className="max-w-5xl mx-auto w-full">
-              <div className="flex items-end justify-between gap-6">
-                <div>
-                  <div className="eyebrow mb-4 text-signal">07 · The Dossier</div>
-                  <h1 className="font-display text-6xl md:text-8xl leading-[0.9] text-text">Dossier</h1>
-                  <div className="mt-4 font-mono text-[11px] uppercase tracking-widest text-muted flex flex-wrap gap-x-6 gap-y-1">
-                    <span>Subject · Meteor</span>
-                    <span>Status · Active</span>
-                    <span>Handle · tut.meteor</span>
-                  </div>
-                </div>
-                <Stamp className="hidden md:flex mb-2">Cleared for release</Stamp>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Intro */}
-      <section className="px-6 lg:px-12 pt-12">
-        <div className="max-w-5xl mx-auto">
-          <Reveal>
-            <p className="font-display italic text-2xl md:text-4xl leading-tight text-muted max-w-2xl">
-              Everything in this file is true. Some of it is redacted. That is the point.
-            </p>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* 01 ON RECORD */}
-      <FileSection number="01" name="On record" caption="Things done, stated flat.">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-line border border-line rounded-lg overflow-hidden">
-          {ON_RECORD.map((it) => (
-            <div key={it.label} className="bg-void p-6 flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <span className="text-signal font-mono text-xs">✓</span>
-                <span className="font-mono text-[11px] uppercase tracking-widest text-text">{it.label}</span>
-              </div>
-              <p className="text-base text-muted font-light leading-relaxed">{it.body}</p>
-              {it.href && (
-                <Link
-                  href={it.href}
-                  data-cursor="open"
-                  className="mt-1 w-fit font-mono text-[10px] uppercase tracking-widest text-signal/80 hover:text-signal transition-colors"
-                >
-                  open the file →
-                </Link>
-              )}
-            </div>
-          ))}
-        </div>
-        <Attachment src="/dossier/forts.jpg" id="A-1" caption="Subject, recurring sighting: forts, Sahyadris, monsoon." />
-      </FileSection>
-
-      {/* 02 IN TRAINING */}
-      <FileSection number="02" name="In training" caption="The horizon. Fully intended.">
-        <div className="flex flex-col divide-y divide-line border-y border-line">
-          {IN_TRAINING.map((it) => (
-            <div key={it.label} className="py-6 flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-8">
-              <div className="sm:w-56 shrink-0 flex items-center gap-3">
-                <span className="font-mono text-[9px] uppercase tracking-widest border border-signal/50 text-signal rounded px-2 py-1">
-                  {it.tag}
-                </span>
-                <span className="font-display text-2xl text-text">{it.label}</span>
-              </div>
-              <p className="text-base md:text-lg text-muted font-light leading-relaxed">{it.body}</p>
-            </div>
-          ))}
-        </div>
-        <Attachment src="/dossier/gloves.jpg" id="A-2" caption="Training log, ongoing: keep the people I care about safe." />
-      </FileSection>
-
-      {/* 03 FREQUENCIES */}
-      <FileSection number="03" name="Frequencies" caption="What I will happily talk about at 2am.">
-        <div className="flex flex-wrap gap-2.5">
-          {FREQUENCIES.map((f) => (
-            <span
-              key={f}
-              className="font-mono text-[11px] lowercase tracking-wide text-muted border border-line rounded-full px-4 py-2 hover:border-signal/60 hover:text-signal transition-colors"
-            >
-              {f}
-            </span>
-          ))}
-        </div>
-      </FileSection>
-
-      {/* 04 STATIC */}
-      <FileSection number="04" name="Static" caption="What I will not.">
-        <ul className="flex flex-col gap-4 max-w-2xl">
-          {WONT_DISCUSS.map((w, i) => (
-            <li key={i} className="flex gap-3 items-baseline text-lg md:text-xl font-light text-text/85">
-              <span className="text-signal/50 font-mono text-xs mt-1.5">—</span>
-              <span className="leading-relaxed">
-                {w.body && <span>{w.body} </span>}
-                {w.redacted && <Redacted text={w.redacted} />}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </FileSection>
-
-      {/* 05 COORDINATES */}
-      <FileSection number="05" name="Coordinates" caption="Taste, rapid fire." last>
-        <dl className="grid grid-cols-1 md:grid-cols-2 gap-x-14">
-          {COORDINATES.map((c) => (
-            <div key={c.key} className="flex items-baseline justify-between gap-6 border-b border-line/60 py-3.5">
-              <dt className="font-mono text-[11px] uppercase tracking-widest text-muted shrink-0">{c.key}</dt>
-              <dd className="text-right text-text font-light">{c.value}</dd>
-            </div>
-          ))}
-        </dl>
-        <Attachment src="/dossier/drift.jpg" id="A-3" caption="Vehicle of interest, any make: it is raining, and it is 2am." />
-      </FileSection>
-
-      {/* Close */}
-      <section className="px-6 lg:px-12 py-20">
-        <div className="max-w-5xl mx-auto flex flex-col items-start gap-8 border-t border-line pt-12">
-          <Stamp>End of file · nothing further</Stamp>
-          <p className="font-display italic text-3xl md:text-5xl leading-tight text-text max-w-2xl">
-            The rest stays above your clearance.
-          </p>
-          <Magnetic>
-            <Link
-              href="/signal"
-              data-cursor="reach out"
-              className="inline-flex items-center gap-3 rounded-full border border-signal/60 px-7 py-3.5 text-sm text-signal hover:bg-signal hover:text-void transition-colors duration-300"
-            >
-              Request contact <span aria-hidden>→</span>
-            </Link>
-          </Magnetic>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );
 }
 
-function FileSection({
-  number,
-  name,
-  caption,
-  children,
-  last,
-}: {
-  number: string;
-  name: string;
-  caption?: string;
-  children: React.ReactNode;
-  last?: boolean;
-}) {
+// Subcomponents
+
+function BentoCard({ number, title, caption, children }: { number: string, title: string, caption: string, children: React.ReactNode }) {
   return (
-    <section className={`px-6 lg:px-12 pt-16 ${last ? "pb-4" : "pb-4"}`}>
-      <div className="max-w-5xl mx-auto">
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-8 mb-10">
-          <div>
-            <div className="eyebrow flex items-center gap-3">
-              <span className="inline-block w-8 h-px bg-signal" />
-              {number} · {name}
-            </div>
-            {caption && (
-              <p className="mt-2 font-mono text-[10px] uppercase tracking-widest text-muted/60">{caption}</p>
-            )}
+    <Reveal>
+      <section className="bg-surface/20 border border-line rounded-xl p-6 sm:p-8 backdrop-blur-sm relative overflow-hidden">
+        {/* Subtle top glare */}
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        
+        <header className="mb-8 border-b border-line/50 pb-4">
+          <div className="flex items-center gap-3">
+            <span className="text-signal font-mono text-xs">[{number}]</span>
+            <h2 className="font-mono text-sm uppercase tracking-[0.2em] text-text">
+              <ScrambleText text={title} delay={0.2} speed={0.4} />
+            </h2>
           </div>
-          <Stamp>Reviewed · cleared</Stamp>
+          <p className="mt-2 font-mono text-[9px] uppercase tracking-widest text-muted/60 ml-8">{caption}</p>
+        </header>
+        
+        <div className="relative z-10">
+          {children}
         </div>
-        {children}
-      </div>
-    </section>
-  );
-}
-
-function Stamp({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, scale: 1.6, rotate: -22 }}
-      whileInView={{ opacity: 1, scale: 1, rotate: -7 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ type: "spring", stiffness: 220, damping: 13 }}
-      className={`inline-flex items-center gap-2 rounded border-2 border-signal/60 px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.2em] text-signal/90 ${className}`}
-    >
-      <span className="inline-block w-1.5 h-1.5 rounded-full bg-signal/70" />
-      {children}
-    </motion.span>
-  );
-}
-
-function Redacted({ text }: { text: string }) {
-  return (
-    <span className="group relative inline-block align-middle">
-      <span
-        className="select-none rounded-[2px] bg-[#17171b] px-1.5 text-transparent ring-1 ring-white/10 shadow-inner"
-        aria-label="redacted"
-      >
-        {text}
-      </span>
-      <span className="pointer-events-none absolute left-1/2 -translate-x-1/2 -top-8 whitespace-nowrap rounded border border-line bg-void px-2 py-1 font-mono text-[9px] uppercase tracking-widest text-muted opacity-0 group-hover:opacity-100 transition-opacity">
-        clearance insufficient
-      </span>
-    </span>
-  );
-}
-
-function Attachment({ src, id, caption }: { src: string; id: string; caption: string }) {
-  return (
-    <Reveal className="mt-10">
-      <figure>
-        <div className="relative aspect-[16/9] rounded-lg overflow-hidden ring-1 ring-line">
-          <Image
-            src={src}
-            alt={caption}
-            fill
-            sizes="(max-width: 768px) 100vw, 900px"
-            className="object-cover grayscale contrast-[1.05] brightness-[0.7]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-void/70 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-signal/10 mix-blend-overlay" />
-          <span className="absolute top-3 right-3 font-mono text-[9px] uppercase tracking-widest text-text/70 bg-void/60 px-2 py-1 rounded">
-            Attachment · {id}
-          </span>
-        </div>
-        <figcaption className="mt-3 font-mono text-[10px] uppercase tracking-widest text-muted/60">
-          {caption}
-        </figcaption>
-      </figure>
+      </section>
     </Reveal>
+  );
+}
+
+
+
+function Attachment({ src, fallback, id, caption }: { src: string; fallback: string, id: string; caption: string }) {
+  // Using fallback so if the new downloaded image 404s, we have a backup.
+  return (
+    <div className="mt-8 relative aspect-[2.39/1] w-full rounded border border-line overflow-hidden group">
+      <Image
+        src={src}
+        alt={caption}
+        fill
+        sizes="(max-width: 768px) 100vw, 800px"
+        className="object-cover grayscale contrast-125 brightness-[0.5] group-hover:scale-105 group-hover:brightness-[0.7] transition-all duration-700 ease-out"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = fallback;
+        }}
+      />
+      <div className="absolute inset-0 bg-signal/10 mix-blend-overlay pointer-events-none" />
+      <div className="absolute top-3 right-3 font-mono text-[9px] uppercase tracking-widest text-text bg-void/80 px-2 py-1 rounded backdrop-blur border border-line/50">
+        {id}
+      </div>
+      <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-void to-transparent">
+        <p className="font-mono text-[9px] uppercase tracking-widest text-muted">{caption}</p>
+      </div>
+    </div>
   );
 }

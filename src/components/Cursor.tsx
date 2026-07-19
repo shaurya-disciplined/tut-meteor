@@ -17,8 +17,8 @@ export function Cursor() {
 
   const dotX = useMotionValue(-100);
   const dotY = useMotionValue(-100);
-  const ringX = useSpring(dotX, { stiffness: 380, damping: 34, mass: 0.6 });
-  const ringY = useSpring(dotY, { stiffness: 380, damping: 34, mass: 0.6 });
+  const ringX = useSpring(dotX, { stiffness: 600, damping: 30, mass: 0.2 });
+  const ringY = useSpring(dotY, { stiffness: 600, damping: 30, mass: 0.2 });
 
   useEffect(() => {
     const fine =
